@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import "dotenv/config.js";
 import { connectionDatabase } from "./config/connection.js";
 
 var corsOptions = {
@@ -17,4 +17,4 @@ app.get("/", (req, res) => {
   connectionDatabase();
   res.send("API is Running...");
 });
-app.listen(5000, console.log("server running..."));
+app.listen(process.env.PORT, console.log("server running..."));
