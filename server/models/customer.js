@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Customer.hasOne(models.Account, {
         foreignKey: "accountId",
+        targetKey: "id",
+      });
+      Customer.hasMany(models.Exam_Schedule, {
+        sourceKey: "id",
+        targetKey: "customerId",
       });
     }
   }
