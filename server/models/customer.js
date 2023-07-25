@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "id",
         targetKey: "customerId",
       });
+      Customer.hasMany(models.Prescription, {
+        sourceKey: "id",
+        targetKey: "customerId",
+      });
     }
   }
   Customer.init(
