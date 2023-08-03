@@ -9,14 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Exam_History_Drugs.hasOne(models.Drug, {
-        foreignKey: "drugId",
-        targetKey: "id",
-      });
-      Exam_History_Drugs.hasOne(models.Exam_History, {
-        foreignKey: "examHistoryId",
-        targetKey: "id",
-      });
     }
   }
   Exam_History_Drugs.init(

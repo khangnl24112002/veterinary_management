@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Drug_Import_Report.belongsTo(models.Import_Report_Detail, {
-        sourceKey: "id",
-        foreignKey: "drugImportReportId",
-      });
     }
   }
   Drug_Import_Report.init(

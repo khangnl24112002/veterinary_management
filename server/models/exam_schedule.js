@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Exam_Schedule.belongsTo(models.Customer, {
-        foreignKey: "customerId",
-        targetKey: "id",
-      });
     }
   }
   Exam_Schedule.init(

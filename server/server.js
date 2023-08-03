@@ -22,4 +22,4 @@ app.get("/", (req, res) => {
   connectionDatabase();
   res.send("API is Running...");
 });
-app.listen(process.env.PORT, console.log("server running..."));
+app.listen(`${process.env.PORT}`, console.log("server running..."));

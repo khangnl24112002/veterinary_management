@@ -9,14 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Prescription.belongsTo(models.Customer, {
-        foreignKey: "customerId",
-        targetKey: "id",
-      });
-      Prescription.hasMany(models.Prescription_Detail, {
-        sourceKey: "id",
-        targetKey: "prescriptionId",
-      });
     }
   }
   Prescription.init(
