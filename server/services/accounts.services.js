@@ -43,8 +43,17 @@ const createAccount = async (username, password, avatar) => {
   }
 };
 
+const findByUsername = async (username) => {
+  const account = await db.Account.findOne({
+    where: {
+      username,
+    },
+  });
+  return account;
+};
 module.exports = {
   getAll,
   findById,
   createAccount,
+  findByUsername,
 };

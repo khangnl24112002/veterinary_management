@@ -1,5 +1,6 @@
 const accountServices = require("../services/accounts.services");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 const getAccounts = async (req, res) => {
@@ -81,14 +82,79 @@ const register = async (req, res) => {
     }
     // truong hop tao ra account thanh cong
     else {
-      res.status(201).json(newAccount);
+      // tao token va gui ve nguoi dung
+      let token;
+      token = jwt.sign(
+        {
+          accountId: newAccount.id,
+          username: newAccount.username,
+          role: 2, // default is 2 (customer)
+        },
+        process.env.TOKEN,
+        { expiresIn: process.env.TOKEN_EXPIRE }
+      );
+      res.status(201).json({
+        success: true,
+        data: {
+          accountId: newAccount.id,
+          username: newAccount.username,
+          token: token,
+        },
+      });
     }
   } catch (error) {
     console.log(error);
   }
 };
+
+const login = async (req, res) => {
+  try {
+    // get data in body
+    const { username, password } = req.body;
+    if (!username || !password) {
+      res.status(400).json({
+        err: -1,
+        mes: "Missing username or password!",
+      });
+    }
+    const account = await accountServices.findByUsername(username);
+    // truong hop khong tim thay ten TK hoac mat khau nhap ko khop
+    if (!account || !bcrypt.compareSync(password, account.password)) {
+      res.status(401).json({
+        err: -1,
+        mes: "Wrong username or password!",
+      });
+    } else {
+      // truong hop da dang nhap thanh cong
+      // tao token
+      let token;
+      token = jwt.sign(
+        {
+          accountId: account.id,
+          username: account.username,
+          role: account.role,
+        },
+        process.env.TOKEN,
+        { expiresIn: process.env.TOKEN_EXPIRE }
+      );
+      res.status(200).send({
+        err: -1,
+        mes: "Login successfully!",
+        data: {
+          accountId: account.id,
+          username: account.username,
+          token: token,
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getAccounts,
   getAccountById,
   register,
+  login,
 };

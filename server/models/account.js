@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Account.hasOne(models.Admin, {
         foreignKey: "accountId",
-        as: "adminInfo",
       });
     }
   }
@@ -19,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       username: DataTypes.STRING,
       password: DataTypes.STRING,
       avatar: DataTypes.STRING,
+      role: DataTypes.INTEGER,
     },
     {
       sequelize,
