@@ -23,8 +23,20 @@ const findById = async (accountId) => {
 
 const createAccount = async (username, password, avatar) => {
   try {
-    const newAccount = await db.Account.create({ username, password, avatar });
-    return newAccount;
+    const [newAccount, created] = await db.Account.findOrCreate({
+      where: { username },
+      defaults: {
+        username,
+        password,
+        avatar,
+      },
+    });
+    // truong hop da co tai khoan co username ton tai: tra ve -1
+    if (!created) {
+      return -1;
+    } else {
+      return newAccount;
+    }
   } catch (err) {
     console.log(err);
     return 0;

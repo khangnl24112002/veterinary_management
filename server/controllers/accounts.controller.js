@@ -1,4 +1,6 @@
 const accountServices = require("../services/accounts.services");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const getAccounts = async (req, res) => {
   try {
@@ -48,12 +50,39 @@ const register = async (req, res) => {
   try {
     const { username, password } = req.body;
     const avatar = "link avatar";
+    // check missing data
+    if (!username || !password) {
+      res.status(400).json({
+        err: -1,
+        mes: "Missing username or password!",
+      });
+    }
+    // hash password with bcrypt
+    const hashPassword = bcrypt.hashSync(password, saltRounds);
+    // add new account using model
     const newAccount = await accountServices.createAccount(
       username,
-      password,
+      hashPassword,
       avatar
     );
-    res.status(201).json(newAccount);
+    // Truong hop model bi loi khong create account duoc
+    if (newAccount === 0) {
+      res.status(500).json({
+        err: -1,
+        mes: "Cannot create account",
+      });
+    }
+    // Truong hop tao ra tai khoan da ton tai truoc do
+    else if (newAccount === -1) {
+      res.status(409).json({
+        err: -1,
+        mes: "Account already have in system!",
+      });
+    }
+    // truong hop tao ra account thanh cong
+    else {
+      res.status(201).json(newAccount);
+    }
   } catch (error) {
     console.log(error);
   }
