@@ -5,7 +5,13 @@ const getAccounts = async (req, res) => {
   res.send(accounts);
 };
 const getAccountByUsername = (req, res) => {};
+
+const getAccountById = async (req, res) => {
+  const acc = await account.findById();
+  res.send(acc);
+};
 module.exports = {
   getAccounts,
   getAccountByUsername,
+  getAccountById,
 };

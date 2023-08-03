@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Admin.belongsTo(models.Account, {
+        foreignKey: "accountId",
+      });
     }
   }
   Admin.init(
