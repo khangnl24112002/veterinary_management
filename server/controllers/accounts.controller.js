@@ -1,38 +1,35 @@
 const accountServices = require("../services/accounts.services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {
+  internalServerError,
+  badRequest,
+  conflict,
+  unauthorized,
+} = require("../middlewares/handleError");
 const saltRounds = 10;
 
-const getAccounts = async (req, res) => {
+const getAccounts = async (req, res, next) => {
   try {
     const accounts = await accountServices.getAll();
     // neu model bi loi
     if (!accounts) {
-      res.status(500).json({
-        err: -1,
-        mes: "Internal server error",
-      });
+      return next(internalServerError("Account Service bi loi"));
     }
     // neu query thanh cong
     else res.status(200).json(accounts);
   } catch (err) {
-    res.status(500).json({
-      err: -1,
-      mes: "Internal server error",
-    });
+    return next(internalServerError("Account controller bi loi"));
   }
 };
 
-const getAccountById = async (req, res) => {
+const getAccountById = async (req, res, next) => {
   try {
     const accountId = req.params.id;
     const account = await accountServices.findById(accountId);
     // truong hop bi loi xay ra
     if (account === 0) {
-      res.status(500).json({
-        err: -1,
-        mes: "Internal server error",
-      });
+      return next(internalServerError("Account model bi loi"));
     }
     // neu tra ve thanh cong account thi se gui account ve phia nguoi dung
     else {
@@ -40,23 +37,17 @@ const getAccountById = async (req, res) => {
     }
   } catch (err) {
     // truong hop bi loi bat ngo o controller
-    res.status(500).json({
-      err: -1,
-      mes: "Internal server error",
-    });
+    return next(internalServerError("Account controller bi loi"));
   }
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const avatar = "link avatar";
     // check missing data
     if (!username || !password) {
-      res.status(400).json({
-        err: -1,
-        mes: "Missing username or password!",
-      });
+      return next(badRequest("Thieu thong tin username hoac password").message);
     }
     // hash password with bcrypt
     const hashPassword = bcrypt.hashSync(password, saltRounds);
@@ -68,17 +59,13 @@ const register = async (req, res) => {
     );
     // Truong hop model bi loi khong create account duoc
     if (newAccount === 0) {
-      res.status(500).json({
-        err: -1,
-        mes: "Cannot create account",
-      });
+      return next(
+        internalServerError("Model bi loi khong the tao duoc account")
+      );
     }
     // Truong hop tao ra tai khoan da ton tai truoc do
     else if (newAccount === -1) {
-      res.status(409).json({
-        err: -1,
-        mes: "Account already have in system!",
-      });
+      return next(conflict("Tai khoan da ton tai truoc do"));
     }
     // truong hop tao ra account thanh cong
     else {
@@ -103,27 +90,21 @@ const register = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    return next(internalServerError("Account controller register bi loi"));
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     // get data in body
     const { username, password } = req.body;
     if (!username || !password) {
-      res.status(400).json({
-        err: -1,
-        mes: "Missing username or password!",
-      });
+      return next(badRequest("Nhap thieu thong tin tai khoan hoac mat khau"));
     }
     const account = await accountServices.findByUsername(username);
     // truong hop khong tim thay ten TK hoac mat khau nhap ko khop
     if (!account || !bcrypt.compareSync(password, account.password)) {
-      res.status(401).json({
-        err: -1,
-        mes: "Wrong username or password!",
-      });
+      return next(unauthorized("Tai khoan hoac mat khau khong dung"));
     } else {
       // truong hop da dang nhap thanh cong
       // tao token
@@ -148,7 +129,7 @@ const login = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    return next(internalServerError("Account controller bi loi Login"));
   }
 };
 
