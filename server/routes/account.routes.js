@@ -1,5 +1,4 @@
-const accounts = require("../controllers/accounts.controller");
-const { checkIsAdmin } = require("../middlewares/checkIsAdmin");
+const accounts = require("../controllers/account.controllers");
 
 const router = require("express").Router();
 
