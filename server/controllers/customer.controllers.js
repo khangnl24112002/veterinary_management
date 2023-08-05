@@ -9,7 +9,14 @@ const accountServices = require("../services/account.services");
 
 const getCustomerInfo = async (req, res, next) => {
   try {
-    // Customer muon lay thong tin cua chinh minh
+    // Lay id tu params
+    const customerId = req.params.id;
+    const customerInfo = await customerServices.getById(customerId);
+    if (customerInfo === 0) {
+      return next(internalServerError("Customer model bi loi"));
+    } else {
+      res.status(200).json(customerInfo);
+    }
   } catch (err) {
     return next(internalServerError("Customer Controller bi loi"));
   }

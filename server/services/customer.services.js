@@ -10,6 +10,15 @@ const getAll = async () => {
   }
 };
 
+const getById = async (customerId) => {
+  try {
+    const customer = await db.Customer.findByPk(customerId);
+    return customer;
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
 const insert = async ({ name, phoneNumber, address, email }, accountId) => {
   try {
     const customer = await db.Customer.create({
@@ -29,4 +38,5 @@ const insert = async ({ name, phoneNumber, address, email }, accountId) => {
 module.exports = {
   getAll,
   insert,
+  getById,
 };
