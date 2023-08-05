@@ -22,6 +22,8 @@ const addNewAdmin = async (req, res, next) => {
   try {
     // Lay thong tin admin tu body
     const { name, phoneNumber, address, email } = req.body;
+    // Lay thong tin tai khoan admin
+    const adminAccountId = parseInt(req.adminData.accountId);
     // xac thuc thong tin
     try {
       const adminInfo = await adminSchema.validateAsync({
@@ -30,12 +32,13 @@ const addNewAdmin = async (req, res, next) => {
         address,
         email,
       });
-      // Goi den model de dien thong tin vao
-      const newAdmin = await adminServices.insert(adminInfo);
+      // Neu xac thuc thanh cong thi Goi den model de dien thong tin vao
+      const newAdmin = await adminServices.insert(adminInfo, adminAccountId);
       if (newAdmin === 0) {
         return next(internalServerError("Model admin bi loi"));
+      } else {
+        res.status(200).json(newAdmin);
       }
-      res.status(200).json(newAdmin);
     } catch (err) {
       return next(badRequest("Thong tin nhap vao khong dung."));
     }

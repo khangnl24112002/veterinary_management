@@ -22,6 +22,8 @@ const checkIsAdmin = (req, res, next) => {
         role: decoded.role,
       };
       if (data.role === 1) {
+        // Gan thong tin admin data vao req de xu li tai controller
+        req.adminData = data;
         next();
       } else {
         // truong hop khong phai la admin

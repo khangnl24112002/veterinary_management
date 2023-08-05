@@ -10,9 +10,18 @@ const getAll = async () => {
   }
 };
 
-const insert = async ({ name, phoneNumber, address, email }) => {
+const insert = async (
+  { name, phoneNumber, address, email },
+  adminAccountId
+) => {
   try {
-    const admin = await db.Admin.create({ name, phoneNumber, address, email });
+    const admin = await db.Admin.create({
+      name,
+      phoneNumber,
+      address,
+      email,
+      accountId: adminAccountId,
+    });
     return admin;
   } catch (err) {
     console.log(err);

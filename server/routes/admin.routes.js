@@ -1,8 +1,9 @@
 const admin = require("../controllers/admin.controllers");
+const { checkIsAdmin } = require("../middlewares/checkIsAdmin");
 
 const router = require("express").Router();
 
-router.get("/", admin.getAllAdmins);
-router.post("/", admin.addNewAdmin);
+router.get("/", checkIsAdmin, admin.getAllAdmins);
+router.post("/", checkIsAdmin, admin.addNewAdmin);
 
 module.exports = router;
