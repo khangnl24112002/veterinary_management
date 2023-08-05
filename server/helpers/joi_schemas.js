@@ -9,6 +9,16 @@ const adminSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+const customerSchema = Joi.object({
+  name: Joi.string()
+    .pattern(new RegExp(/[A-Za-z ]/))
+    .required(),
+  phoneNumber: Joi.string().pattern(new RegExp(/[0-9]/)).required(),
+  address: Joi.string().required(),
+  email: Joi.string().email().required(),
+});
+
 module.exports = {
   adminSchema,
+  customerSchema,
 };

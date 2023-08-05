@@ -1,6 +1,6 @@
-const checkIsAdmin = (req, res, next) => {
+const checkIsCustomer = (req, res, next) => {
   const accountData = req.accountData;
-  if (accountData.role === 1) {
+  if (accountData.role === 2) {
     next();
   } else {
     // truong hop khong phai la admin
@@ -12,5 +12,5 @@ const checkIsAdmin = (req, res, next) => {
 };
 
 module.exports = {
-  checkIsAdmin,
+  checkIsCustomer,
 };

@@ -23,7 +23,7 @@ const addNewAdmin = async (req, res, next) => {
     // Lay thong tin admin tu body
     const { name, phoneNumber, address, email } = req.body;
     // Lay thong tin tai khoan admin
-    const adminAccountId = parseInt(req.adminData.accountId);
+    const adminAccountId = parseInt(req.accountData.accountId);
     // xac thuc thong tin
     try {
       const adminInfo = await adminSchema.validateAsync({

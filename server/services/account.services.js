@@ -44,12 +44,17 @@ const createAccount = async (username, password, avatar) => {
 };
 
 const findByUsername = async (username) => {
-  const account = await db.Account.findOne({
-    where: {
-      username,
-    },
-  });
-  return account;
+  try {
+    const account = await db.Account.findOne({
+      where: {
+        username,
+      },
+    });
+    return account;
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
 };
 module.exports = {
   getAll,
