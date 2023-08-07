@@ -1,8 +1,9 @@
 // Tao store va ket noi den ung dung
 
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import authReducer from "./reducers/authReducer";
+import thunk from "redux-thunk";
 
-const store = createStore(authReducer);
+const store = createStore(authReducer, applyMiddleware(thunk));
 
 export default store;
