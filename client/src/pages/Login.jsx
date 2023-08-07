@@ -1,7 +1,7 @@
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../actions/authActions";
+import { login } from "../actions/authActions";
 
 const Login = () => {
   const {
@@ -14,7 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const onSubmit = (data) => {
     const user = { data };
-    dispatch(loginSuccess(user));
+    dispatch(login(user.username, user.password));
   };
 
   return (
