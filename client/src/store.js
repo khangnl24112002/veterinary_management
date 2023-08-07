@@ -1,0 +1,8 @@
+// Tao store va ket noi den ung dung
+
+import { createStore } from "redux";
+import authReducer from "./reducers/authReducer";
+
+const store = createStore(authReducer);
+
+export default store;
