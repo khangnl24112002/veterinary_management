@@ -1,6 +1,7 @@
 const initialState = {
-  isLoggedIn: false,
+  isAuthenticated: false,
   user: null,
+  errorMessage: "",
 };
 
 // Tao reducer de quan ly trang thai dang nhap
@@ -10,16 +11,19 @@ const authReducer = (state = initialState, action) => {
     case "LOGIN_SUCCESS":
       return {
         ...state,
-        isLoggedIn: true,
+        isAuthenticated: true,
         user: action.payload,
+        errorMessage: "",
+      };
+    // Neu action la login that bai
+    case "LOGIN_FAILURE":
+      return {
+        ...state,
+        errorMessage: action.payload,
       };
     // neu action la dang xuat
     case "LOGOUT":
-      return {
-        ...state,
-        isLoggedIn: false,
-        user: null,
-      };
+      return initialState;
     default:
       return state;
   }

@@ -104,7 +104,10 @@ const login = async (req, res, next) => {
     const account = await accountServices.findByUsername(username);
     // truong hop khong tim thay ten TK hoac mat khau nhap ko khop
     if (!account || !bcrypt.compareSync(password, account.password)) {
-      return next(unauthorized("Tai khoan hoac mat khau khong dung"));
+      res.status(401).json({
+        err: 1,
+        message: "Tai khoan hoac mat khau khong dung!",
+      });
     } else {
       // truong hop da dang nhap thanh cong
       // tao token
