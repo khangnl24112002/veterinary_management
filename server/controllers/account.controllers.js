@@ -70,22 +70,34 @@ const register = async (req, res, next) => {
     // truong hop tao ra account thanh cong
     else {
       // tao token va gui ve nguoi dung
-      let token;
-      token = jwt.sign(
+      const accessToken = jwt.sign(
         {
           accountId: newAccount.id,
           username: newAccount.username,
           role: 2, // default is 2 (customer)
         },
-        process.env.TOKEN,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.TOKEN_EXPIRE }
       );
+      // tao refresh token va gui ve nguoi dung
+      const refreshToken = jwt.sign(
+        {
+          accountId: newAccount.id,
+          username: newAccount.username,
+          role: 2, // default is 2 (customer)
+        },
+        process.env.REFRESH_TOKEN_SECRET
+      );
+      // Gan cookie vao response
+      res.cookie("refreshToken", refreshToken, { httpOnly: true });
+      // tra response cho client
       res.status(201).json({
-        success: true,
+        err: -1,
+        mes: "Register successfully",
         data: {
           accountId: newAccount.id,
           username: newAccount.username,
-          token: token,
+          token: accessToken,
         },
       });
     }
@@ -110,24 +122,35 @@ const login = async (req, res, next) => {
       });
     } else {
       // truong hop da dang nhap thanh cong
-      // tao token
-      let token;
-      token = jwt.sign(
+      // tao access token
+      const accessToken = jwt.sign(
         {
           accountId: account.id,
           username: account.username,
           role: account.role,
         },
-        process.env.TOKEN,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.TOKEN_EXPIRE }
       );
+      // tao refresh token
+      const refreshToken = jwt.sign(
+        {
+          accountId: account.id,
+          username: account.username,
+          role: account.role,
+        },
+        process.env.REFRESH_TOKEN_SECRET
+      );
+      // Tao cookie gan vao response
+      res.cookie("refreshToken", refreshToken, { httpOnly: true });
+      // Gui response den cho client
       res.status(200).send({
         err: -1,
         mes: "Login successfully!",
         data: {
           accountId: account.id,
           username: account.username,
-          token: token,
+          token: accessToken,
         },
       });
     }
@@ -136,9 +159,46 @@ const login = async (req, res, next) => {
   }
 };
 
+const refreshAccessToken = (req, res, next) => {
+  try {
+    // Lay token tu cookie
+    const refreshToken = req.cookie.refreshToken;
+    // Neu khong thay refresh token
+    if (!refreshToken) {
+      return next(unauthorized("Refresh token not found!"));
+    }
+    // Neu nhan duoc refresh token thi xac thuc token
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, decoded) => {
+        // Neu co loi xay ra
+        if (err) {
+          return next(unauthorized("Invalid refresh token"));
+        }
+        // Cap lai accessToken cho client
+        const accessToken = jwt.sign(
+          {
+            accountId: decoded.accountId,
+            username: decoded.username,
+            role: decoded.role,
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: process.env.TOKEN_EXPIRE }
+        );
+        res.status(200).send({
+          token: accessToken,
+        });
+      }
+    );
+  } catch (err) {
+    return next(internalServerError("Account controller bi loi Refresh Token"));
+  }
+};
 module.exports = {
   getAccounts,
   getAccountById,
   register,
   login,
+  refreshAccessToken,
 };
