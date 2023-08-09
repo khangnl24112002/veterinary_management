@@ -4,6 +4,7 @@ import { logoutUser } from "../actions/authActions";
 
 const Admin = () => {
   const navigate = useNavigate();
+
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   if (!user) {
@@ -13,12 +14,12 @@ const Admin = () => {
     dispatch(logoutUser());
     navigate("/");
   };
+
   return (
     <div>
-      <h1>Welcome to Admin Page</h1>
-      <h1>Hello {user.username}</h1>
-      <h1>Your password: {user.password}</h1>
-      <button onClick={handleLogout}>Log out</button>
+      <div>
+        <button onClick={handleLogout}>Log out</button>
+      </div>
     </div>
   );
 };
