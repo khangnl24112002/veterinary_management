@@ -7,7 +7,7 @@ import Header from "../components/Header/Header";
 const Admin = () => {
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   if (!user) {
     return <Navigate to="/login" replace />;

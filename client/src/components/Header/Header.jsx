@@ -60,22 +60,22 @@ const Header = () => {
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
                 <ul>
                   <li className="px-4 py-2 hover:bg-gray-100">
-                    <button className="flex items-center w-full focus:outline-none">
+                    <div className="flex items-center w-full focus:outline-none">
                       {/* Edit Profile icon SVG */}
                       Edit Profile
-                    </button>
+                    </div>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-100">
-                    <button className="flex items-center w-full focus:outline-none">
+                    <div className="flex items-center w-full focus:outline-none">
                       {/* Settings icon SVG */}
                       Settings
-                    </button>
+                    </div>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-100">
-                    <button className="flex items-center w-full focus:outline-none">
+                    <div className="flex items-center w-full focus:outline-none">
                       {/* Logout icon SVG */}
                       Logout
-                    </button>
+                    </div>
                   </li>
                 </ul>
               </div>

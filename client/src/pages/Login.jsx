@@ -7,7 +7,7 @@ const Login = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
   const onSubmit = async (data) => {
     try {
       await dispatch(loginUser(data.username, data.password));
@@ -16,7 +16,7 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    console.log("Curent user in Redux:", user);
+    console.log("Current User", user);
     if (!user?.role) {
       navigate("/login");
     } else if (user.role === "admin") {
