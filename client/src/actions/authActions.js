@@ -13,6 +13,7 @@ export const loginUser = (username, password) => async (dispatch) => {
   const user = {
     username,
     password,
+    role: "admin",
   };
   dispatch({
     type: LOGIN_SUCCESS,

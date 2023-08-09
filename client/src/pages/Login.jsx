@@ -1,20 +1,30 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../actions/authActions";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const onSubmit = async (data) => {
     try {
       await dispatch(loginUser(data.username, data.password));
-      navigate("/admin");
     } catch (err) {
       console.log("Error logging in:", err);
     }
   };
-
+  useEffect(() => {
+    console.log("Curent user in Redux:", user);
+    if (!user?.role) {
+      navigate("/login");
+    } else if (user.role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/customer");
+    }
+  }, [user]);
   return (
     <section className="h-screen">
       <div className="h-full">

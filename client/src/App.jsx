@@ -5,11 +5,9 @@ import Admin from "./pages/Admin";
 import Customer from "./pages/Customer";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useSelector } from "react-redux";
 import NotFound from "./pages/NotFound";
-
+import Unauthorized from "./pages/Unauthorized";
 const App = () => {
-  const user = useSelector((state) => state.user);
   return (
     <>
       <BrowserRouter>
@@ -18,7 +16,7 @@ const App = () => {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute allowedRoles={["admin", "customer"]}>
                 <Admin />
               </ProtectedRoute>
             }
@@ -26,6 +24,7 @@ const App = () => {
           ;
           <Route path="/customer" element={<Customer />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
