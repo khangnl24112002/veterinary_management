@@ -5,7 +5,11 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../actions/authActions";
 
 const Login = ({ setToken }) => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
     const result = await dispatch(loginUser(data.username, data.password));
@@ -88,7 +92,14 @@ const Login = ({ setToken }) => {
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput2"
                   placeholder="Username"
-                  {...register("username")}
+                  {...register("username", {
+                    required: "Username is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9_]+$/g,
+                      message:
+                        "This input only contains characters, numbers, and whitespace.",
+                    },
+                  })}
                 />
                 <label
                   htmlFor="exampleFormControlInput2"
@@ -96,6 +107,7 @@ const Login = ({ setToken }) => {
                 >
                   Username
                 </label>
+                {errors.username && <span>{errors.username.message}</span>}
               </div>
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
@@ -103,7 +115,9 @@ const Login = ({ setToken }) => {
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput22"
                   placeholder="Password"
-                  {...register("password")}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
                 <label
                   htmlFor="exampleFormControlInput22"
@@ -111,6 +125,7 @@ const Login = ({ setToken }) => {
                 >
                   Password
                 </label>
+                {errors.password && <span>{errors.password.message}</span>}
               </div>
               <div className="mb-6 flex items-center justify-between">
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
