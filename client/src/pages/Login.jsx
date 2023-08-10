@@ -8,12 +8,12 @@ const Login = ({ setToken }) => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
-    const result = await dispatch(loginUser(data.username, data.password)); // if (result?.error) {
-    //   console.log("tai khoan hoac mat khau khong dung");
-    // } else {
-    //   setToken(result.accessToken);
-    // }
-    setToken(result.accessToken);
+    const result = await dispatch(loginUser(data.username, data.password));
+    if (result?.error) {
+      console.log("tai khoan hoac mat khau khong dung");
+    } else {
+      setToken(result.accessToken);
+    }
   };
 
   return (

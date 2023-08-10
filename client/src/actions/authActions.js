@@ -1,5 +1,4 @@
-import axios from "axios";
-
+/* eslint-disable no-unused-vars */
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
 
@@ -8,7 +7,7 @@ export const loginUser = (username, password) => async (dispatch) => {
   //   email: "eve.holt@reqres.in",
   //   password: "cityslicka",
   // });
-  const t = 1; // gia su response gui ve la thanh cong
+  const t = 0; // gia su response gui ve la thanh cong
   if (t === 1) {
     // Gia su day la du lieu sau khi da nhan duoc tu server
     const responseData = {
@@ -37,7 +36,9 @@ export const loginUser = (username, password) => async (dispatch) => {
   } else {
     // Neu dang nhap khong thanh cong
     const error = "Tai khoan hoac mat khau khong dung";
-    return error;
+    return {
+      error,
+    };
   }
 };
 
