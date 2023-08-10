@@ -7,7 +7,6 @@ import Homepage from "./pages/Homepage";
 
 const App = () => {
   const { token, setToken, removeToken } = useToken();
-
   if (!token) {
     // truyen function setToken cho component con
     // de khi dang nhap thanh cong thi se setToken

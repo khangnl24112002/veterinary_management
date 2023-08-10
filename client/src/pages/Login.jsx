@@ -1,12 +1,19 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../actions/authActions";
 
 const Login = ({ setToken }) => {
   const { register, handleSubmit } = useForm();
-
+  const dispatch = useDispatch();
   const onSubmit = async (data) => {
-    // Gia su day la data lay duoc tu API
-    const token = { token: "abc" };
-    setToken(token);
+    const result = await dispatch(loginUser(data.username, data.password)); // if (result?.error) {
+    //   console.log("tai khoan hoac mat khau khong dung");
+    // } else {
+    //   setToken(result.accessToken);
+    // }
+    setToken(result.accessToken);
   };
 
   return (
