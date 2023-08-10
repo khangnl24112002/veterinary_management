@@ -7,11 +7,11 @@ export const loginUser = (username, password) => async (dispatch) => {
   //   email: "eve.holt@reqres.in",
   //   password: "cityslicka",
   // });
-  const t = 0; // gia su response gui ve la thanh cong
+  const t = 1; // gia su response gui ve la thanh cong
   if (t === 1) {
     // Gia su day la du lieu sau khi da nhan duoc tu server
     const responseData = {
-      username: "abc",
+      username,
       id: 1,
       role: "admin",
       accessToken: "abc",
