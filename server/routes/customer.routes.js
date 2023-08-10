@@ -1,12 +1,12 @@
 const customer = require("../controllers/customer.controllers");
 const router = require("express").Router();
-const { checkIsLogin } = require("../middlewares/checkIsLogin");
 const { checkIsAdmin } = require("../middlewares/checkIsAdmin");
+const { isAuthenticated } = require("../middlewares/isAuthenticated");
 
-router.get("/:id", checkIsLogin, customer.getCustomerInfo);
+router.get("/:id", isAuthenticated, customer.getCustomerInfo);
 
 // Tao mot thong tin nguoi dung moi
 // chi co admin moi co quyen tao thong tin tai khoan cho customer
-router.post("/", checkIsLogin, checkIsAdmin, customer.addNewCustomer);
+router.post("/", isAuthenticated, checkIsAdmin, customer.addNewCustomer);
 
 module.exports = router;

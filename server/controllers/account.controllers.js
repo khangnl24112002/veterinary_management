@@ -7,6 +7,7 @@ const {
   conflict,
   unauthorized,
 } = require("../middlewares/handleError");
+const { verifyRefresh } = require("../middlewares/isAuthenticated");
 const saltRounds = 10;
 
 const getAccounts = async (req, res, next) => {
@@ -77,7 +78,7 @@ const register = async (req, res, next) => {
           role: 2, // default is 2 (customer)
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.TOKEN_EXPIRE }
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRE }
       );
       // tao refresh token va gui ve nguoi dung
       const refreshToken = jwt.sign(
@@ -117,14 +118,19 @@ const login = async (req, res, next) => {
     // get data in body
     const { username, password } = req.body;
     if (!username || !password) {
-      return next(badRequest("Nhap thieu thong tin tai khoan hoac mat khau"));
+      return res.status(400).json({
+        success: false,
+        err: 1,
+        message: "Missing values",
+      });
     }
     const account = await accountServices.findByUsername(username);
     // truong hop khong tim thay ten TK hoac mat khau nhap ko khop
     if (!account || !bcrypt.compareSync(password, account.password)) {
-      res.status(406).json({
-        err: 1,
-        message: "Tai khoan hoac mat khau khong dung!",
+      return res.status(406).json({
+        success: false,
+        err: 2,
+        message: "Invalid username or password!",
       });
     } else {
       // truong hop da dang nhap thanh cong
@@ -136,7 +142,7 @@ const login = async (req, res, next) => {
           role: account.role,
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.TOKEN_EXPIRE }
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRE }
       );
       // tao refresh token
       // (thoi gian cua refresh token lon hon
@@ -148,24 +154,20 @@ const login = async (req, res, next) => {
           role: account.role,
         },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRE }
       );
-      // Tao cookie gan vao response
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      });
       // Gui response den cho client
-      res.status(200).send({
+      return res.status(200).json({
+        success: true,
         err: -1,
-        mes: "Login successfully!",
+        message: "Login successfully!",
         data: {
           accountId: account.id,
           username: account.username,
-          token: accessToken,
+          role: account.role,
         },
+        accessToken,
+        refreshToken,
       });
     }
   } catch (err) {
@@ -173,42 +175,28 @@ const login = async (req, res, next) => {
   }
 };
 
-const refreshAccessToken = (req, res, next) => {
-  try {
-    if (req.cookies?.refreshToken) {
-      // Lay token tu cookie
-      const refreshToken = req.cookies.refreshToken;
-      jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET,
-        (err, decoded) => {
-          // Neu co loi xay ra
-          if (err) {
-            return next(unauthorized("Invalid refresh token"));
-          } else {
-            // Cap lai accessToken cho client
-            const accessToken = jwt.sign(
-              {
-                accountId: decoded.accountId,
-                username: decoded.username,
-                role: decoded.role,
-              },
-              process.env.ACCESS_TOKEN_SECRET,
-              { expiresIn: process.env.TOKEN_EXPIRE }
-            );
-            res.status(200).send({
-              token: accessToken,
-            });
-          }
-        }
-      );
-    } else {
-      // Neu khong thay refresh token
-      return next(unauthorized("Refresh token not found!"));
-    }
-  } catch (err) {
-    return next(internalServerError("Account controller bi loi Refresh Token"));
+const refreshAccessToken = async (req, res, next) => {
+  const { account, refreshToken } = req.body;
+  const isValid = await verifyRefresh(account, refreshToken);
+  if (!isValid) {
+    return res.status(401).json({
+      success: false,
+      err: 1,
+      message: "Invalid token, try login again",
+    });
   }
+  const accessToken = jwt.sign(
+    {
+      accountId: account.id,
+      username: account.username,
+      role: account.role,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
+    }
+  );
+  res.status(200).json({ success: true, err: -1, accessToken: accessToken });
 };
 module.exports = {
   getAccounts,
