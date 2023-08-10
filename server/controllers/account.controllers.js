@@ -176,14 +176,22 @@ const login = async (req, res, next) => {
   }
 };
 
+// Ham nay cap lai refresh Token cho client
 const refreshAccessToken = async (req, res, next) => {
   const { account, refreshToken } = req.body;
+  // Kiem tra refresh token cu co hop le hay khong?
   const isValid = await verifyRefresh(account, refreshToken);
-  if (!isValid) {
+  if (isValid === 0) {
     return res.status(401).json({
       success: false,
       err: 1,
       message: "Invalid token, try login again",
+    });
+  } else if (isValid === -1) {
+    return res.status(401).json({
+      success: false,
+      err: 2,
+      message: "Invalid account info",
     });
   }
   const accessToken = jwt.sign(

@@ -37,13 +37,13 @@ const verifyRefresh = (account, token) => {
       decodedToken.accountId === account.accountId &&
       decodedToken.role === account.role
     ) {
-      return true;
+      return 1;
     } else {
-      return false;
+      return -1;
     }
   } catch (error) {
     // console.log(error);
-    return false;
+    return 0;
   }
 };
 
