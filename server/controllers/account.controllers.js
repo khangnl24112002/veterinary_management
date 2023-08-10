@@ -48,7 +48,11 @@ const register = async (req, res, next) => {
     const avatar = "link avatar";
     // check missing data
     if (!username || !password) {
-      return next(badRequest("Thieu thong tin username hoac password").message);
+      return res.status(400).json({
+        success: false,
+        err: 1,
+        message: "Missing values",
+      });
     }
     // hash password with bcrypt
     const hashPassword = bcrypt.hashSync(password, saltRounds);
@@ -88,24 +92,21 @@ const register = async (req, res, next) => {
           role: 2, // default is 2 (customer)
         },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRE }
       );
-      // Gan cookie vao response
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      });
       // tra response cho client
-      res.status(201).json({
+      // Gui response den cho client
+      return res.status(200).json({
+        success: true,
         err: -1,
-        mes: "Register successfully",
+        message: "Register successfully!",
         data: {
           accountId: newAccount.id,
           username: newAccount.username,
-          token: accessToken,
+          role: 2,
         },
+        accessToken,
+        refreshToken,
       });
     }
   } catch (error) {

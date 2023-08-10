@@ -13,9 +13,9 @@ const isAuthenticated = (req, res, next) => {
     // Thanh cong
     // Lay thong tin duoc gui ma hoa tu token
     const data = {
-      accountId: decoded.accountId,
-      username: decoded.username,
-      role: decoded.role,
+      accountId: decodedToken.accountId,
+      username: decodedToken.username,
+      role: decodedToken.role,
     };
     // gui thong tin ma hoa cho req
     req.accountData = data;
