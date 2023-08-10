@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-import Unauthorized from "./Unauthorized";
 import Admin from "./Admin";
 import Customer from "./Customer";
 import { logoutUser } from "../actions/authActions";
+import UnknownError from "./UnknownError";
 
 const Homepage = ({ removeToken }) => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Homepage = ({ removeToken }) => {
         <Customer handleLogout={handleLogout} />
       </div>
     );
-  else return <Unauthorized />;
+  else return <UnknownError />;
 };
 
 export default Homepage;
