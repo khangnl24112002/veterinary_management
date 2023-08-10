@@ -8,7 +8,6 @@ const Header = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
   return (
     <header className="bg-primary-200">
       <div className="container mx-auto py-4 px-6 flex justify-between items-center">

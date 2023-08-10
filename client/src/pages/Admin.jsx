@@ -1,25 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { logoutUser } from "../actions/authActions";
+/* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header/Header";
 
-const Admin = () => {
-  const navigate = useNavigate();
-
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/");
-  };
-
+const Admin = ({ handleLogout }) => {
   return (
     <div>
       <div>
+        <h1>Admin page</h1>
         <Header />
         <Navbar />
         <button onClick={handleLogout}>Log out</button>

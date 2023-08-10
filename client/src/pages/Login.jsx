@@ -1,30 +1,14 @@
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../actions/authActions";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-const Login = () => {
+
+const Login = ({ setToken }) => {
   const { register, handleSubmit } = useForm();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
+
   const onSubmit = async (data) => {
-    try {
-      await dispatch(loginUser(data.username, data.password));
-    } catch (err) {
-      console.log("Error logging in:", err);
-    }
+    // Gia su day la data lay duoc tu API
+    const token = { token: "abc" };
+    setToken(token);
   };
-  useEffect(() => {
-    console.log("Current User", user);
-    if (!user?.role) {
-      navigate("/login");
-    } else if (user.role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/customer");
-    }
-  }, [user]);
+
   return (
     <section className="h-screen">
       <div className="h-full">

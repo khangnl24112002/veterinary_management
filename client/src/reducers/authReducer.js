@@ -1,7 +1,10 @@
 import { LOGIN_SUCCESS, LOGOUT } from "../actions/authActions";
 
 const initialState = {
-  user: null,
+  user: {
+    username: "khang",
+    role: "customer",
+  },
 };
 
 // Tao reducer de quan ly trang thai dang nhap
