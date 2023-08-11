@@ -33,9 +33,15 @@ export const loginUser = (username, password) => async (dispatch) => {
       };
     }
   } catch (error) {
-    return {
-      error: error.response.data.message,
-    };
+    if (error?.response) {
+      return {
+        error: error.response.data.message,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
   }
 };
 
