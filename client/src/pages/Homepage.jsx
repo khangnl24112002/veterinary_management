@@ -2,19 +2,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import Admin from "./Admin";
 import Customer from "./Customer";
-import { logoutUser } from "../actions/authActions";
+import { logoutUser } from "../actions/authAction/authActions";
 import UnknownError from "./UnknownError";
 
-const Homepage = ({ removeToken }) => {
+const Homepage = ({ removeTokens }) => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     // Xoa token
-    removeToken();
+    removeTokens();
     // xoa thong tin nguoi dung khoi redux
     dispatch(logoutUser());
   };
   const userInfo = useSelector((state) => state.auth.user);
-  if (userInfo?.role === "admin")
+  if (userInfo?.role === 1)
     return (
       <div>
         <Admin handleLogout={handleLogout} />

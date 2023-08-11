@@ -1,29 +1,36 @@
 import { useState } from "react";
 
 export default function useToken() {
-  const getToken = () => {
+  const getTokens = () => {
     // get token from localStorage
-    const tokenString = localStorage.getItem("accessToken");
-    const userToken = JSON.parse(tokenString);
-    return userToken;
+    const accessTokenString = localStorage.getItem("accessToken");
+    const accessToken = JSON.parse(accessTokenString);
+    const refreshTokenString = localStorage.getItem("refreshToken");
+    const refreshToken = JSON.parse(refreshTokenString);
+    return {
+      accessToken,
+      refreshToken,
+    };
   };
   // set token as initial state
-  const [token, setToken] = useState(getToken());
+  const [tokens, setTokens] = useState(getTokens());
 
-  const saveToken = (userToken) => {
+  const saveTokens = (accessToken, refreshToken) => {
     // Set token argument to localStorage
-    localStorage.setItem("accessToken", JSON.stringify(userToken));
-    setToken(userToken);
+    localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
+    setTokens({ accessToken, refreshToken });
   };
 
-  const removeToken = () => {
+  const removeTokens = () => {
     localStorage.removeItem("accessToken");
-    setToken();
+    localStorage.removeItem("refreshToken");
+    setTokens();
   };
 
   return {
-    setToken: saveToken,
-    token,
-    removeToken,
+    setTokens: saveTokens,
+    tokens,
+    removeTokens,
   };
 }

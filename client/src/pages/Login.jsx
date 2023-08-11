@@ -2,9 +2,9 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../actions/authActions";
+import { loginUser } from "../actions/authAction/authActions";
 
-const Login = ({ setToken }) => {
+const Login = ({ setTokens }) => {
   const {
     register,
     handleSubmit,
@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
     if (result?.error) {
       console.log("tai khoan hoac mat khau khong dung");
     } else {
-      setToken(result.accessToken);
+      setTokens(result.accessToken, result.refreshToken);
     }
   };
 

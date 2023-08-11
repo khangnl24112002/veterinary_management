@@ -1,3 +1,1 @@
-export const LOGIN_API = "http://localhost:5000/api/v1/accounts/login";
-export const REFRESH_TOKEN_API =
-  "http://localhost:5000/api/v1/accounts/refresh-token";
+export const API_URL = "http://localhost:5000/api/v1/";

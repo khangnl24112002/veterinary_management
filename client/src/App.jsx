@@ -6,17 +6,17 @@ import useToken from "./hooks/useToken";
 import Homepage from "./pages/Homepage";
 
 const App = () => {
-  const { token, setToken, removeToken } = useToken();
-  if (!token) {
+  const { tokens, setTokens, removeTokens } = useToken();
+  if (!tokens || (!tokens.accessToken && !tokens.refreshToken)) {
     // truyen function setToken cho component con
     // de khi dang nhap thanh cong thi se setToken
-    return <Login setToken={setToken} />;
+    return <Login setTokens={setTokens} />;
   }
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Homepage removeToken={removeToken} />} />
+          <Route path="/" element={<Homepage removeTokens={removeTokens} />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

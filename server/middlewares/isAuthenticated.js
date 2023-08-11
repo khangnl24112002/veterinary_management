@@ -29,6 +29,7 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+// Ham xac nhan xem refreshToken co chinh xac hay khong
 const verifyRefresh = (account, token) => {
   try {
     const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
