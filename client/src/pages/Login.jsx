@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../actions/authAction/authActions";
+import { useState } from "react";
 
 const Login = ({ setTokens }) => {
   const {
@@ -10,11 +11,12 @@ const Login = ({ setTokens }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [loginError, setLoginError] = useState("");
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
     const result = await dispatch(loginUser(data.username, data.password));
     if (result?.error) {
-      console.log("tai khoan hoac mat khau khong dung");
+      setLoginError(result.error);
     } else {
       setTokens(result.accessToken, result.refreshToken);
     }
@@ -153,6 +155,7 @@ const Login = ({ setTokens }) => {
                 >
                   Login
                 </button>
+                <p>{loginError}</p>
                 <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
                   Dont have an account?
                   <a
