@@ -182,7 +182,7 @@ const refreshAccessToken = async (req, res, next) => {
   // Kiem tra refresh token cu co hop le hay khong?
   const isValid = await verifyRefresh(account, refreshToken);
   if (isValid === 0) {
-    return res.status(401).json({
+    return res.status(403).json({
       success: false,
       err: 1,
       message: "Invalid token, try login again",

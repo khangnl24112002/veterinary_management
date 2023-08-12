@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const isAuthenticated = (req, res, next) => {
   try {
-    let token = req.get("authorization");
+    let token = req.get("Authorization");
     if (!token) {
       return res
         .status(404)
@@ -32,10 +32,13 @@ const isAuthenticated = (req, res, next) => {
 // Ham xac nhan xem refreshToken co chinh xac hay khong
 const verifyRefresh = (account, token) => {
   try {
+    token = token.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    console.log("Decoded token:", decodedToken);
+    console.log("Account:", account);
     if (
       decodedToken.username === account.username &&
-      decodedToken.accountId === account.accountId &&
+      decodedToken.accountId === account.id &&
       decodedToken.role === account.role
     ) {
       return 1;

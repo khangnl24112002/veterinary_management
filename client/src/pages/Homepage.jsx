@@ -10,6 +10,8 @@ const Homepage = ({ removeTokens }) => {
   const handleLogout = () => {
     // Xoa token
     removeTokens();
+    // Xoa thong tin user khoi localStorage
+    localStorage.removeItem("account");
     // xoa thong tin nguoi dung khoi redux
     dispatch(logoutUser());
   };

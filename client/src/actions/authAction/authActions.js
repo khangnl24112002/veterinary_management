@@ -26,6 +26,8 @@ export const loginUser = (username, password) => async (dispatch) => {
         type: LOGIN_SUCCESS,
         payload: user,
       });
+      // Luu thong tin user vao localStorage
+      localStorage.setItem("account", JSON.stringify(user));
       // tra ve token
       return {
         accessToken: responseData.accessToken,
