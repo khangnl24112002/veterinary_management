@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API_URL } from "../api/server_api";
-import { Navigate } from "react-router-dom";
 
 function getLocalAccessToken() {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));

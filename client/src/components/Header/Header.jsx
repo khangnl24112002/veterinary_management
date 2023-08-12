@@ -2,9 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logoImage from "../../assets/imgs/logo.jpg";
 
-const Header = () => {
+const Header = ({ user }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -18,7 +17,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex items-center flex-grow">
-          <div className="relative mx-auto">
+          <div className="grow">
             <input
               type="text"
               placeholder="Search"

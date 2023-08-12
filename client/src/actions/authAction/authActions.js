@@ -1,4 +1,4 @@
-import axiosInstance from "../../axios/axiosInstance";
+import axiosInstance from "../../axios/axios_interceptor_instance";
 import { LOGIN_SUCCESS, LOGOUT } from "../actionTypes";
 /* eslint-disable no-unused-vars */
 

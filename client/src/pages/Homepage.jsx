@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Admin from "./Admin";
 import Customer from "./Customer";
 import { logoutUser } from "../actions/authAction/authActions";
@@ -15,7 +15,7 @@ const Homepage = ({ removeTokens }) => {
     // xoa thong tin nguoi dung khoi redux
     dispatch(logoutUser());
   };
-  const userInfo = useSelector((state) => state.auth.user);
+  const userInfo = JSON.parse(localStorage.getItem("account"));
   if (userInfo?.role === 1)
     return (
       <div>
