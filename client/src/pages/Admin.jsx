@@ -2,6 +2,7 @@
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header/Header";
 import axiosInstance from "../axios/axios_interceptor_instance";
+import { Outlet } from "react-router-dom";
 
 const Admin = ({ handleLogout, userInfo }) => {
   const testRefreshToken = async () => {
@@ -17,7 +18,10 @@ const Admin = ({ handleLogout, userInfo }) => {
     <div>
       <div>
         <Header userInfo={userInfo} handleLogout={handleLogout} />
-        <Navbar />
+        <div className="flex">
+          <Navbar />
+          <Outlet />
+        </div>
         <button onClick={testRefreshToken}>Call API test</button>
       </div>
     </div>
