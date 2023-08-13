@@ -1,16 +1,13 @@
 /* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header/Header";
-import { useSelector } from "react-redux";
 
-const Customer = ({ handleLogout }) => {
-  const user = useSelector((state) => state.auth.user);
+const Customer = ({ handleLogout, userInfo }) => {
   return (
     <div>
       <div>
-        <Header user={user} />
+        <Header userInfo={userInfo} handleLogout={handleLogout} />
         <Navbar />
-        <button onClick={handleLogout}>Log out</button>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { useState } from "react";
 import logoImage from "../../assets/imgs/logo.jpg";
 import { Link } from "react-router-dom";
 
-const Header = ({ userInfo }) => {
+const Header = ({ userInfo, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -58,15 +58,15 @@ const Header = ({ userInfo }) => {
         </div>
       </div>
       <div className="flex items-center justify-center">
-        {/**Code here */}
+        {/**Render username */}
         <div className="mr-2">
           <h3>Hello {userInfo.username}</h3>
         </div>
+        {/**Dropdown */}
         <div className="relative inline-block text-left">
           <button
             type="button"
-            onClick={toggleDropdown}
-            onBlur={closeDropdown}
+            onClick={toggleDropdown} // Toggle dropdown on click
             className="rounded-full focus:outline-none"
             id="user-menu"
             aria-haspopup="true"
@@ -83,7 +83,7 @@ const Header = ({ userInfo }) => {
               className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu"
               aria-orientation="vertical"
-              aria-labelledby="user-menu"
+              onMouseLeave={closeDropdown} // Close dropdown on mouse leave
             >
               <div className="py-1" role="none">
                 <Link
@@ -101,7 +101,10 @@ const Header = ({ userInfo }) => {
                   Settings
                 </Link>
                 <button
-                  onClick={() => {}} // Implement your logout function here
+                  onClick={() => {
+                    handleLogout();
+                    closeDropdown(); // Close dropdown after handling click
+                  }}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
                   role="menuitem"
                 >

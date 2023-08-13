@@ -25,7 +25,7 @@ const Homepage = ({ removeTokens }) => {
   else if (userInfo?.role === 2)
     return (
       <div>
-        <Customer handleLogout={handleLogout} />
+        <Customer handleLogout={handleLogout} userInfo={userInfo} />
       </div>
     );
   else return <UnknownError />;

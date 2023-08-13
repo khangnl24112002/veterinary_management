@@ -16,10 +16,9 @@ const Admin = ({ handleLogout, userInfo }) => {
   return (
     <div>
       <div>
-        <Header userInfo={userInfo} />
+        <Header userInfo={userInfo} handleLogout={handleLogout} />
         <Navbar />
         <button onClick={testRefreshToken}>Call API test</button>
-        <button onClick={handleLogout}>Log out</button>
       </div>
     </div>
   );
