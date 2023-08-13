@@ -3,14 +3,13 @@ import { useState } from "react";
 const ProfilePage = () => {
   const initialProfile = {
     name: "John Doe",
-    age: 30,
+    phoneNumber: "0988233222",
     email: "johndoe@example.com",
     address: "123 Main St, City",
   };
 
   const [profile, setProfile] = useState(initialProfile);
   const [editing, setEditing] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleEditClick = () => {
@@ -23,14 +22,13 @@ const ProfilePage = () => {
       ...prevProfile,
       [name]: value,
     }));
-    setIsChanged(true);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (e) => {
+    e.preventDefault();
     // Simulate saving changes
     // In a real scenario, you would perform API requests or data updates here
     setIsSuccess(true);
-    setIsChanged(false);
   };
 
   return (
@@ -47,8 +45,9 @@ const ProfilePage = () => {
         <div className="flex-grow p-8 bg-white shadow-md">
           <h2 className="text-2xl font-semibold mb-4">Profile</h2>
           <form className="space-y-4">
+            {/**Name */}
             <div className="flex items-center">
-              <span className="font-semibold w-1/4">Họ và Tên:</span>
+              <span className="font-semibold w-1/4">Name:</span>
               {editing ? (
                 <input
                   type="text"
@@ -62,17 +61,17 @@ const ProfilePage = () => {
               )}
             </div>
             <div className="flex items-center">
-              <span className="font-semibold w-1/4">Tuổi:</span>
+              <span className="font-semibold w-1/4">Phone Number:</span>
               {editing ? (
                 <input
                   type="number"
                   name="age"
-                  value={profile.age}
+                  value={profile.phoneNumber}
                   onChange={handleInputChange}
                   className="w-3/4 p-2 border rounded focus:outline-none focus:border-blue-500"
                 />
               ) : (
-                <p className="w-3/4">{profile.age}</p>
+                <p className="w-3/4">{profile.phoneNumber}</p>
               )}
             </div>
             <div className="flex items-center">
@@ -90,7 +89,7 @@ const ProfilePage = () => {
               )}
             </div>
             <div className="flex items-center">
-              <span className="font-semibold w-1/4">Địa Chỉ:</span>
+              <span className="font-semibold w-1/4">Address:</span>
               {editing ? (
                 <input
                   type="text"
@@ -108,13 +107,12 @@ const ProfilePage = () => {
                 <button
                   className="flex-grow bg-blue-500 text-white py-2 rounded hover:bg-blue-700"
                   onClick={handleSaveClick}
-                  disabled={!isChanged}
                 >
                   Save
                 </button>
                 {isSuccess && (
                   <p className="flex-none text-green-600 self-center">
-                    Cập nhật thành công!
+                    Update successfully!
                   </p>
                 )}
               </div>
