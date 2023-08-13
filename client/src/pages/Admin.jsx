@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header/Header";
-import { useSelector } from "react-redux";
 import axiosInstance from "../axios/axios_interceptor_instance";
 
-const Admin = ({ handleLogout }) => {
+const Admin = ({ handleLogout, userInfo }) => {
   const testRefreshToken = async () => {
     try {
       const response = await axiosInstance.get("/accounts");
@@ -14,11 +13,10 @@ const Admin = ({ handleLogout }) => {
       // Dang xuat
     }
   };
-  const user = useSelector((state) => state.auth.user);
   return (
     <div>
       <div>
-        <Header user={user} />
+        <Header userInfo={userInfo} />
         <Navbar />
         <button onClick={testRefreshToken}>Call API test</button>
         <button onClick={handleLogout}>Log out</button>

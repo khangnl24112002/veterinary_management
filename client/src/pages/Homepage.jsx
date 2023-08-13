@@ -19,7 +19,7 @@ const Homepage = ({ removeTokens }) => {
   if (userInfo?.role === 1)
     return (
       <div>
-        <Admin handleLogout={handleLogout} />
+        <Admin handleLogout={handleLogout} userInfo={userInfo} />
       </div>
     );
   else if (userInfo?.role === 2)
