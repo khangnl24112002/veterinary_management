@@ -2,8 +2,6 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config.js";
 import { notFound } from "./middlewares/handleError.js";
-const cookieParser = require("cookie-parser");
-
 const router = require("./routes/index.js");
 
 var corsOptions = {
@@ -16,7 +14,6 @@ var corsOptions = {
 
 const app = express();
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
