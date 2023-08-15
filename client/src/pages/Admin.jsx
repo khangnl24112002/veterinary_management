@@ -4,7 +4,7 @@ import Header from "../components/Header/Header";
 import axiosInstance from "../axios/axios_interceptor_instance";
 import { Outlet } from "react-router-dom";
 
-const Admin = ({ handleLogout, userInfo }) => {
+const Admin = ({ handleLogout }) => {
   // const testRefreshToken = async () => {
   //   try {
   //     const response = await axiosInstance.get("/accounts");
@@ -18,7 +18,7 @@ const Admin = ({ handleLogout, userInfo }) => {
     <div className="flex flex-row h-screen overflow-hidden">
       <Navbar />
       <div className="flex flex-col w-[100%]">
-        <Header userInfo={userInfo} handleLogout={handleLogout} />
+        <Header handleLogout={handleLogout} />
         <Outlet />
       </div>
     </div>

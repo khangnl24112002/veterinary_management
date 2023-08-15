@@ -19,13 +19,13 @@ const Homepage = ({ removeTokens }) => {
   if (userInfo?.role === 1)
     return (
       <div>
-        <Admin handleLogout={handleLogout} userInfo={userInfo} />
+        <Admin handleLogout={handleLogout} />
       </div>
     );
   else if (userInfo?.role === 2)
     return (
       <div>
-        <Customer handleLogout={handleLogout} userInfo={userInfo} />
+        <Customer handleLogout={handleLogout} />
       </div>
     );
   else return <UnknownError />;

@@ -4,7 +4,8 @@ import logoImage from "../../assets/imgs/logo.jpg";
 import { Link } from "react-router-dom";
 import DigitalClock from "../DigitalClock/DigitalClock";
 
-const Header = ({ userInfo, handleLogout }) => {
+const Header = ({ handleLogout }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
   return (
     <div className="flex w-[100%] justify-around border-b-2 border-slate-300  mb-5 pb-3 pt-3">
       {/**Search bar */}
@@ -75,12 +76,33 @@ const Header = ({ userInfo, handleLogout }) => {
           </svg>
         </div>
         {/**Avatar */}
-        <div>
+        <div className="relative">
           <img
-            className="rounded-full w-12 h-12"
+            className="rounded-full w-12 h-12 cursor-pointer"
             src={logoImage}
             alt="avatar"
+            onClick={() => setShowDropdown(!showDropdown)}
           />
+          {showDropdown && (
+            <div
+              className="absolute top-10 right-0 bg-white border border-gray-300 rounded-md shadow-md p-2 mt-2"
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              <ul className="space-y-1">
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/settings">Settings</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={handleLogout}>
+                    Log out
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
