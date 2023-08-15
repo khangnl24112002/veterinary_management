@@ -18,12 +18,12 @@ const DigitalClock = () => {
   const seconds = time.getSeconds().toString().padStart(2, "0");
 
   return (
-    <div className="flex items-center justify-center bg-gray-100">
-      <div className="text-3xl">
-        <span className="mr-2">{hours}</span>
-        <span className="ml-2 mr-2">:</span>
-        <span className="ml-2">{minutes}</span>
-        <span className="ml-2 mr-2">:</span>
+    <div className="flex items-center justify-center">
+      <div className="text-2xl">
+        <span className="">{hours}</span>
+        <span>:</span>
+        <span className="">{minutes}</span>
+        <span>:</span>
         <span>{seconds}</span>
       </div>
     </div>
