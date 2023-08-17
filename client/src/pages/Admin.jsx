@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header/Header";
-import axiosInstance from "../axios/axios_interceptor_instance";
 import { Outlet } from "react-router-dom";
 
 const Admin = ({ handleLogout }) => {
