@@ -48,8 +48,26 @@ const addNewAdmin = async (req, res, next) => {
 };
 
 const updateAdminInfo = async (req, res, next) => {
-  const result = await adminServices.update();
-  res.status(200).json(result);
+  const { name, phoneNumber, address, email, avatar } = req.body;
+  const accountId = req.accountData.accountId;
+  const result = await adminServices.update(
+    name,
+    phoneNumber,
+    address,
+    email,
+    avatar,
+    accountId
+  );
+
+  if (result) {
+    res.status(200).json(result);
+  } else {
+    res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error",
+    });
+  }
 };
 
 module.exports = {

@@ -15,9 +15,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
-      avatar: {
-        type: Sequelize.STRING,
-      },
       role: {
         type: Sequelize.INTEGER,
         defaultValue: 2,

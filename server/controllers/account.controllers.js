@@ -45,7 +45,6 @@ const getAccountById = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const avatar = "link avatar";
     // check missing data
     if (!username || !password) {
       return res.status(400).json({
@@ -59,8 +58,7 @@ const register = async (req, res, next) => {
     // add new account using model
     const newAccount = await accountServices.createAccount(
       username,
-      hashPassword,
-      avatar
+      hashPassword
     );
     // Truong hop model bi loi khong create account duoc
     if (newAccount === 0) {

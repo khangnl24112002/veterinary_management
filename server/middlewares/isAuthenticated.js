@@ -38,7 +38,7 @@ const verifyRefresh = (account, token) => {
     console.log("Account:", account);
     if (
       decodedToken.username === account.username &&
-      decodedToken.accountId === account.accountId &&
+      decodedToken.accountId === account.id &&
       decodedToken.role === account.role
     ) {
       return 1;

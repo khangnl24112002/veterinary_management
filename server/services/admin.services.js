@@ -29,8 +29,20 @@ const insert = async (
   }
 };
 
-const update = async () => {
-  return "abc";
+const update = async (name, phoneNumber, address, email, avatar, accountId) => {
+  try {
+    const result = await db.Admin.update(
+      { name, phoneNumber, address, email, avatar },
+      {
+        where: {
+          accountId: accountId,
+        },
+      }
+    );
+    return result;
+  } catch (err) {
+    return 0;
+  }
 };
 module.exports = {
   getAll,
