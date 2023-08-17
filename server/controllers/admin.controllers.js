@@ -49,7 +49,8 @@ const addNewAdmin = async (req, res, next) => {
 
 const updateAdminInfo = async (req, res, next) => {
   const { name, phoneNumber, address, email, avatar } = req.body;
-  const accountId = req.accountData.accountId;
+  const accountId = parseInt(req.accountData.accountId);
+  console.log(avatar);
   const result = await adminServices.update(
     name,
     phoneNumber,
@@ -60,7 +61,11 @@ const updateAdminInfo = async (req, res, next) => {
   );
 
   if (result) {
-    res.status(200).json(result);
+    res.status(200).json({
+      success: true,
+      err: -1,
+      message: "Update successfully",
+    });
   } else {
     res.status(500).json({
       success: false,

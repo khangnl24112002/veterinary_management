@@ -21,6 +21,9 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
       },
+      avatar: {
+        type: Sequelize.STRING,
+      },
       accountId: {
         type: Sequelize.INTEGER,
         references: {
