@@ -6,5 +6,5 @@ const router = require("express").Router();
 
 router.get("/", isAuthenticated, admin.getAllAdmins);
 router.post("/", isAuthenticated, admin.addNewAdmin);
-
+router.put("/", isAuthenticated, checkIsAdmin, admin.updateAdminInfo);
 module.exports = router;

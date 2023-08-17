@@ -29,7 +29,11 @@ const insert = async (
   }
 };
 
+const update = async () => {
+  return "abc";
+};
 module.exports = {
   getAll,
   insert,
+  update,
 };

@@ -47,7 +47,13 @@ const addNewAdmin = async (req, res, next) => {
   }
 };
 
+const updateAdminInfo = async (req, res, next) => {
+  const result = await adminServices.update();
+  res.status(200).json(result);
+};
+
 module.exports = {
   getAllAdmins,
   addNewAdmin,
+  updateAdminInfo,
 };
