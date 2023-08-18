@@ -54,10 +54,11 @@ const addNewAdmin = async (req, res, next) => {
 };
 
 const updateAdminInfo = async (req, res, next) => {
-  const { username, phoneNumber, address, email } = req.body;
+  const { name, phoneNumber, address, email } = req.body;
   const avatarBuffer = req.file.buffer;
-
+  const accountId = req.accountData.accountId;
   try {
+    // Goi upload_stream trong truong hop file anh duoc luu vao bo nho khi dung multer
     const result = await cloudinary.uploader
       .upload_stream(
         {
@@ -73,24 +74,43 @@ const updateAdminInfo = async (req, res, next) => {
             console.error("Error uploading to Cloudinary:", error);
             res
               .status(500)
-              .json({ error: "An error occurred while uploading." });
+              .json({
+                success: false,
+                err: 1,
+                message: "Loi khi upload anh len cloudinary!",
+              });
           } else {
-            // Lưu thông tin vào cơ sở dữ liệu hoặc xử lý theo ý muốn
-            // Trả về dữ liệu đã lưu trong cơ sở dữ liệu (nếu cần)
-            res.json({
-              username,
+            // Luu thong tin nguoi dung vao co so du lieu
+            const newInfo = {
+              name,
               phoneNumber,
               address,
               email,
-              avatarUrl: result.secure_url,
-            });
+              avatar: result.secure_url,
+            };
+            const modelResult = await adminServices.update(
+              newInfo.name,
+              newInfo.phoneNumber,
+              newInfo.address,
+              newInfo.email,
+              newInfo.avatar,
+              accountId
+            );
+            if (modelResult !== 0)
+              // tra ve ket qua cho nguoi dung
+              res.json({
+                err: -1,
+                success: true,
+                data: newInfo,
+              });
           }
         }
       )
       .end(avatarBuffer); // Kết thúc việc tải lên bằng cách truyền dữ liệu tệp
   } catch (error) {
-    console.error("Error uploading to Cloudinary:", error);
-    res.status(500).json({ error: "An error occurred while uploading." });
+    res
+      .status(500)
+      .json({ success: false, err: 1, message: "Loi controller admin" });
   }
 };
 module.exports = {

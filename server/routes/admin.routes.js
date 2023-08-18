@@ -10,5 +10,11 @@ const router = require("express").Router();
 
 router.get("/", isAuthenticated, admin.getAllAdmins);
 router.post("/", isAuthenticated, admin.addNewAdmin);
-router.put("/", upload.single("avatar"), admin.updateAdminInfo);
+router.put(
+  "/",
+  isAuthenticated,
+  checkIsAdmin,
+  upload.single("avatar"),
+  admin.updateAdminInfo
+);
 module.exports = router;
