@@ -10,6 +10,16 @@ const getAll = async () => {
   }
 };
 
+const getByAccountId = async (id) => {
+  try {
+    const admin = await db.Admin.findOne({ where: { accountId: id } });
+    if (admin === null) {
+      return -1;
+    } else return admin;
+  } catch (err) {
+    return 0;
+  }
+};
 const insert = async (
   { name, phoneNumber, address, email },
   adminAccountId
@@ -41,11 +51,12 @@ const update = async (name, phoneNumber, address, email, avatar, accountId) => {
     );
     return result;
   } catch (err) {
-    return 0;
+    return err;
   }
 };
 module.exports = {
   getAll,
   insert,
   update,
+  getByAccountId,
 };

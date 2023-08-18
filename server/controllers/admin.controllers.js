@@ -24,6 +24,18 @@ const getAllAdmins = async (req, res, next) => {
   }
 };
 
+const getAdminByAccountId = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const admin = await adminServices.getByAccountId(id);
+
+    return res.status(200).json({ success: true, err: -1, message: admin });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, err: 1, message: "Internal server error" });
+  }
+};
 const addNewAdmin = async (req, res, next) => {
   try {
     // Lay thong tin admin tu body
@@ -115,4 +127,5 @@ module.exports = {
   getAllAdmins,
   addNewAdmin,
   updateAdminInfo,
+  getAdminByAccountId,
 };
