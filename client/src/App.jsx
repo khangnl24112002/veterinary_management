@@ -10,8 +10,10 @@ import ManageDrugs from "./pages/ManageDrugs";
 import ManageImports from "./pages/ManageImports";
 import ManageExports from "./pages/ManageExports";
 import ManageSchedules from "./pages/ManageSchedules";
-import ManageAccounts from "./pages/ManageAccounts";
+import ManageAccounts from "./pages/ManageAccounts/ManageAccounts";
+import ViewAccounts from "./pages/ManageAccounts/ViewAccounts";
 import AddNewDrug from "./pages/AddNewDrug";
+import AddNewAccount from "./pages/ManageAccounts/AddNewAccount";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -32,7 +34,10 @@ const App = () => {
           <Route path="manage_imports" element={<ManageImports />} />
           <Route path="manage_exports" element={<ManageExports />} />
           <Route path="manage_schedules" element={<ManageSchedules />} />
-          <Route path="manage_accounts" element={<ManageAccounts />} />
+          <Route path="manage_accounts" element={<ManageAccounts />}>
+            <Route path="" element={<ViewAccounts />} />
+            <Route path="addNewAccount" element={<AddNewAccount />} />
+          </Route>
         </Route>
         <Route path="/*" element={<NotFound />} />
       </Routes>
