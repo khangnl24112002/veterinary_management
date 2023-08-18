@@ -1,6 +1,8 @@
 const accountServices = require("../services/account.services");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
+import transformedAccounts from "../helpers/transformAccount";
 const {
   internalServerError,
   badRequest,
@@ -15,11 +17,23 @@ const getAccounts = async (req, res, next) => {
     const accounts = await accountServices.getAll();
     // neu model bi loi
     if (!accounts) {
-      return next(internalServerError("Account Service bi loi"));
+      return res.status(500).json({
+        success: false,
+        err: 1,
+        message: "Account model bi loi",
+      });
     }
-    // neu query thanh cong
-    else res.status(200).json(accounts);
+    // neu query thanh cong => bien doi du lieu tren server de gui ve cho client
+    else {
+      const transformedAcc = transformedAccounts(accounts);
+      res.status(200).json({
+        success: true,
+        err: -1,
+        data: transformedAcc,
+      });
+    }
   } catch (err) {
+    console.log(err);
     return next(internalServerError("Account controller bi loi"));
   }
 };

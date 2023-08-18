@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../actions/adminActions/adminActions";
+import { updateUser } from "../actions/userActions/userActions";
 import { getAdminInfo } from "../services/admin.services";
 import axiosInstance from "../axios/axios_interceptor_instance";
 
