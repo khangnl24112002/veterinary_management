@@ -27,7 +27,7 @@ const ProfilePage = () => {
       dispatch(updateUser(userInfo));
     };
     fetchUserData(account.id);
-  }, [dispatch]);
+  }, []);
 
   const handleEdit = () => {
     setEditing(true);
