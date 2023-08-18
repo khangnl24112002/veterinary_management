@@ -1,118 +1,135 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../actions/userAction/userActions";
+import { updateUser } from "../actions/adminActions/adminActions";
+import axiosInstance from "../axios/axios_interceptor_instance";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user.user);
-  const [data, setData] = useState(user);
   const [editing, setEditing] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user.name,
+    phoneNumber: user.phoneNumber,
+    address: user.address,
+    email: user.email,
+  });
+  const [avatar, setAvatar] = useState(null);
+  const [isChanged, setIsChanged] = useState(false);
   const dispatch = useDispatch();
+
   const handleEdit = () => {
     setEditing(true);
   };
 
-  const handleSave = () => {
-    setEditing(false);
-    setSaved(true);
-    dispatch(updateUser(data));
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    const updatedData = { ...formData };
+
+    if (avatar) {
+      updatedData.avatar = avatar;
+    }
+
+    try {
+      const response = await axiosInstance.put("/admins", updatedData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Dispatch action to update Redux store if needed
+      dispatch(updateUser(updatedData));
+
+      console.log(response.data);
+      setEditing(false);
+      setIsChanged(false);
+    } catch (error) {
+      console.error("Error uploading data:", error);
+    }
   };
 
   const handleChange = (field, value) => {
-    setData((prevData) => ({ ...prevData, [field]: value }));
-    setSaved(false);
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+    setIsChanged(true);
   };
 
-  const handleChangeImage = (e) => {
-    console.log(e.target.files);
-    setData((prevData) => ({
-      ...prevData,
-      avatar: URL.createObjectURL(e.target.files[0]),
-    }));
+  const handleAvatarChange = (e) => {
+    setAvatar(e.target.files[0]);
+    setIsChanged(true);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">
-        <h1 className="text-2xl font-semibold mb-4 mt-0">Profile</h1>
-        <div className="space-y-4">
-          {/**Image */}
-          <p className="font-semibold">Avatar:</p>
-          {editing ? (
-            <input type="file" onChange={handleChangeImage} />
-          ) : (
-            <img className="w-20 h-20" src={data.avatar} alt="avatar" />
-          )}
-          {/**Name */}
-          <p className="font-semibold">Name:</p>
-          {editing ? (
-            <input
-              type="text"
-              value={data.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              className="border rounded p-2 w-full"
-            />
-          ) : (
-            <p>{data.name}</p>
-          )}
-          {/**Phone Number */}
-          <p className="font-semibold">Phone number:</p>
-          {editing ? (
-            <input
-              type="text"
-              value={data.phoneNumber}
-              onChange={(e) => handleChange("phoneNumber", e.target.value)}
-              className="border rounded p-2 w-full"
-            />
-          ) : (
-            <p>{data.phoneNumber}</p>
-          )}
-          {/**Address */}
-          <p className="font-semibold">Address:</p>
-          {editing ? (
-            <input
-              type="text"
-              value={data.address}
-              onChange={(e) => handleChange("address", e.target.value)}
-              className="border rounded p-2 w-full"
-            />
-          ) : (
-            <p>{data.address}</p>
-          )}
-          {/**Email */}
-          <p className="font-semibold">Email:</p>
-          {editing ? (
-            <input
-              type="text"
-              value={data.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="border rounded p-2 w-full"
-            />
-          ) : (
-            <p>{data.email}</p>
-          )}
-        </div>
-        <div className="flex justify-end mt-4">
-          {editing ? (
-            <button
-              onClick={handleSave}
-              className={`bg-green-500 text-white rounded px-4 py-2 ${
-                saved ? "cursor-not-allowed opacity-50" : "hover:bg-green-600"
-              }`}
-              disabled={saved}
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              onClick={handleEdit}
-              className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600"
-            >
-              Edit
-            </button>
-          )}
-        </div>
+    <div>
+      <h1>Profile Page</h1>
+      <div>
+        <label>Name:</label>
+        {editing ? (
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+          />
+        ) : (
+          <p>{formData.name}</p>
+        )}
       </div>
+      <div>
+        <label>Phone Number:</label>
+        {editing ? (
+          <input
+            type="text"
+            value={formData.phoneNumber}
+            onChange={(e) => handleChange("phoneNumber", e.target.value)}
+          />
+        ) : (
+          <p>{formData.phoneNumber}</p>
+        )}
+      </div>
+      <div>
+        <label>Address:</label>
+        {editing ? (
+          <input
+            type="text"
+            value={formData.address}
+            onChange={(e) => handleChange("address", e.target.value)}
+          />
+        ) : (
+          <p>{formData.address}</p>
+        )}
+      </div>
+      <div>
+        <label>Email:</label>
+        {editing ? (
+          <input
+            type="text"
+            value={formData.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+          />
+        ) : (
+          <p>{formData.email}</p>
+        )}
+      </div>
+      <div>
+        <label>Avatar:</label>
+        {editing ? (
+          <input type="file" accept="image/*" onChange={handleAvatarChange} />
+        ) : (
+          <img className="w-20 h-20" src={formData.avatar} alt="avatar" />
+        )}
+      </div>
+      {editing ? (
+        <div>
+          <button onClick={handleSave} disabled={!isChanged}>
+            Save
+          </button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={handleEdit}>Edit</button>
+        </div>
+      )}
     </div>
   );
 };
