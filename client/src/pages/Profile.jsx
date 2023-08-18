@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../actions/adminActions/adminActions";
-import axiosInstance from "../axios/axios_interceptor_instance";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user.user);
@@ -28,23 +27,9 @@ const ProfilePage = () => {
     if (avatar) {
       updatedData.avatar = avatar;
     }
-
-    try {
-      const response = await axiosInstance.put("/admins", updatedData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // Dispatch action to update Redux store if needed
-      dispatch(updateUser(updatedData));
-
-      console.log(response.data);
-      setEditing(false);
-      setIsChanged(false);
-    } catch (error) {
-      console.error("Error uploading data:", error);
-    }
+    dispatch(updateUser(updatedData));
+    setEditing(false);
+    setIsChanged(false);
   };
 
   const handleChange = (field, value) => {

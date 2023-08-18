@@ -72,13 +72,11 @@ const updateAdminInfo = async (req, res, next) => {
         async (error, result) => {
           if (error) {
             console.error("Error uploading to Cloudinary:", error);
-            res
-              .status(500)
-              .json({
-                success: false,
-                err: 1,
-                message: "Loi khi upload anh len cloudinary!",
-              });
+            res.status(500).json({
+              success: false,
+              err: 1,
+              message: "Loi khi upload anh len cloudinary!",
+            });
           } else {
             // Luu thong tin nguoi dung vao co so du lieu
             const newInfo = {

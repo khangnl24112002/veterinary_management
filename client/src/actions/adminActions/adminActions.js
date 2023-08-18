@@ -5,10 +5,10 @@ export const updateUser = (user) => async (dispatch) => {
   // Goi API
   try {
     const response = await updateAdminInfo(user);
-    console.log(response);
+    console.log(response.data);
     dispatch({
       type: UPDATE_ACCOUNT,
-      payload: user,
+      payload: response.data.data,
     });
   } catch (err) {
     return err;
