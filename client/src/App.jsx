@@ -14,6 +14,7 @@ import ManageAccounts from "./pages/ManageAccounts/ManageAccounts";
 import ViewAccounts from "./pages/ManageAccounts/ViewAccounts";
 import AddNewDrug from "./pages/AddNewDrug";
 import AddNewAccount from "./pages/ManageAccounts/AddNewAccount";
+import ViewAccountDetail from "./pages/ManageAccounts/ViewAccountDetail";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="manage_accounts" element={<ManageAccounts />}>
             <Route path="" element={<ViewAccounts />} />
             <Route path="addNewAccount" element={<AddNewAccount />} />
+            <Route path=":id" element={<ViewAccountDetail />} />
           </Route>
         </Route>
         <Route path="/*" element={<NotFound />} />

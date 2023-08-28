@@ -62,7 +62,23 @@ const addNewCustomer = async (req, res, next) => {
   }
 };
 
+const getCustomers = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      success: true,
+      err: -1,
+      message: "get customers",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error",
+    });
+  }
+};
 module.exports = {
   getCustomerInfo,
   addNewCustomer,
+  getCustomers,
 };
