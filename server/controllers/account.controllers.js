@@ -1,4 +1,7 @@
 const accountServices = require("../services/account.services");
+const adminServices = require("../services/admin.services");
+const customerServices = require("../services/customer.services");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -42,13 +45,31 @@ const getAccountById = async (req, res, next) => {
   try {
     const accountId = req.params.id;
     const account = await accountServices.findById(accountId);
+    let accountInfo;
     // truong hop bi loi xay ra
-    if (account === 0) {
-      return next(internalServerError("Account model bi loi"));
+    if (account === 0 || account === null) {
+      return res.status(404).json({
+        success: false,
+        err: 1,
+        message: "Khong tim thay du lieu",
+      });
     }
     // neu tra ve thanh cong account thi se gui account ve phia nguoi dung
     else {
-      res.status(200).json(account);
+      // Lay thong tin tai khoan (neu co)
+      if (account.role === 1) {
+        accountInfo = await adminServices.getByAccountId(accountId);
+      } else if (account.role === 2) {
+        accountInfo = await customerServices.getByAccountId(accountId);
+      }
+      res.status(200).json({
+        success: true,
+        err: -1,
+        data: {
+          account: account,
+          accountInfo: accountInfo,
+        },
+      });
     }
   } catch (err) {
     // truong hop bi loi bat ngo o controller

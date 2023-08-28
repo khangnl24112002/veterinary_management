@@ -10,6 +10,17 @@ const getAll = async () => {
   }
 };
 
+const getByAccountId = async (id) => {
+  try {
+    const customer = await db.Customer.findOne({ where: { accountId: id } });
+    if (customer === null) {
+      return -1;
+    } else return customer;
+  } catch (err) {
+    return 0;
+  }
+};
+
 const getById = async (customerId) => {
   try {
     const customer = await db.Customer.findByPk(customerId);
@@ -39,4 +50,5 @@ module.exports = {
   getAll,
   insert,
   getById,
+  getByAccountId,
 };
