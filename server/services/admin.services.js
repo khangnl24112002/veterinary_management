@@ -21,7 +21,11 @@ const getByAccountId = async (id) => {
   }
 };
 const insert = async (
-  { name, phoneNumber, address, email },
+  name,
+  phoneNumber,
+  address,
+  email,
+  avatar,
   adminAccountId
 ) => {
   try {
@@ -30,6 +34,7 @@ const insert = async (
       phoneNumber,
       address,
       email,
+      avatar,
       accountId: adminAccountId,
     });
     return admin;

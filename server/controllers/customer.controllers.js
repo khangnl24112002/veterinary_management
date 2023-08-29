@@ -5,7 +5,13 @@ const {
 } = require("../middlewares/handleError");
 
 const customerServices = require("../services/customer.services");
-const accountServices = require("../services/account.services");
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: "daexxhimb",
+  api_key: "928598793819699",
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const getCustomerInfo = async (req, res, next) => {
   try {
@@ -24,8 +30,11 @@ const getCustomerInfo = async (req, res, next) => {
 
 const addNewCustomer = async (req, res, next) => {
   try {
-    // Lay thong tin customer tu req.body
-    const { name, phoneNumber, address, email, username } = req.body;
+    // Lay thong tin customer tu body
+    const { name, phoneNumber, address, email, accountId } = req.body;
+    // Lay thong tin tai khoan customer
+    // Lay avatar
+    const avatarBuffer = req.file.buffer;
     // xac thuc thong tin
     try {
       const customerInfo = await customerSchema.validateAsync({
@@ -34,27 +43,55 @@ const addNewCustomer = async (req, res, next) => {
         address,
         email,
       });
-      // Kiem tra xem trong database co account nao co accountId nhu vay khong
-      const customerAccount = await accountServices.findByUsername(username);
-      // neu khong co account nao co username nhu vay thi bao loi va tra ve
-      if (customerAccount === null) {
-        return next(
-          badRequest(`Khong tim thay customer nao co username la ${username}`)
-        );
-      } else if (customerAccount === 0) {
-        return next(internalServerError("Customer model bi loi"));
-      }
-      // Neu co account do thi them vao thong tin customer vao bang
-      const newCustomer = await customerServices.insert(
-        customerInfo,
-        customerAccount.id
-      );
-      if (newCustomer === 0) {
-        return next(internalServerError("Model Customer bi loi"));
-      } else {
-        res.status(200).json(newCustomer);
-      }
+      const result = await cloudinary.uploader
+        .upload_stream(
+          {
+            resource_type: "raw",
+            width: 200, // Chiều rộng sau khi tải lên
+            height: 200, // Chiều cao sau khi tải lên
+            crop: "fill", // Cắt và điều chỉnh để đảm bảo kích thước
+            quality: "auto:good", // Chất lượng ảnh
+            format: "jpg", // Định dạng ảnh
+          },
+          async (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              res.status(500).json({
+                success: false,
+                err: 1,
+                message: "Loi khi upload anh len cloudinary!",
+              });
+            } else {
+              // Luu thong tin nguoi dung vao co so du lieu
+              const newInfo = {
+                name,
+                phoneNumber,
+                address,
+                email,
+                avatar: result.secure_url,
+                accountId,
+              };
+              const modelResult = await customerServices.insert(
+                newInfo.name,
+                newInfo.phoneNumber,
+                newInfo.address,
+                newInfo.email,
+                newInfo.avatar,
+                newInfo.accountId
+              );
+              if (modelResult !== 0)
+                // tra ve ket qua cho nguoi dung
+                res.json({
+                  err: -1,
+                  success: true,
+                  data: newInfo,
+                });
+            }
+          }
+        )
+        .end(avatarBuffer); // Kết thúc việc tải lên bằng cách truyền dữ liệu tệp
     } catch (err) {
+      console.log(err);
       return next(badRequest("Thong tin nhap vao khong dung."));
     }
   } catch (err) {

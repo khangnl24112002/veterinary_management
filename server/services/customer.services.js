@@ -30,14 +30,22 @@ const getById = async (customerId) => {
     return 0;
   }
 };
-const insert = async ({ name, phoneNumber, address, email }, accountId) => {
+const insert = async (
+  name,
+  phoneNumber,
+  address,
+  email,
+  avatar,
+  customerAccountId
+) => {
   try {
     const customer = await db.Customer.create({
       name,
       phoneNumber,
       address,
       email,
-      accountId,
+      avatar,
+      accountId: customerAccountId,
     });
     return customer;
   } catch (err) {

@@ -240,10 +240,63 @@ const refreshAccessToken = async (req, res, next) => {
   );
   res.status(200).json({ success: true, err: -1, accessToken: accessToken });
 };
+
+const createAccount = async (req, res, next) => {
+  try {
+    const { username, password, role } = req.body;
+    if (!username || !password || !role) {
+      return res.status(400).json({
+        success: false,
+        err: 1,
+        message: "Missing values",
+      });
+    }
+    // hash password with bcrypt
+    const hashPassword = bcrypt.hashSync(password, saltRounds);
+    // add new account using model
+    const newAccount = await accountServices.createAccount(
+      username,
+      hashPassword,
+      role
+    );
+    // Truong hop model bi loi khong create account duoc
+    if (newAccount === 0) {
+      return res.json({
+        success: false,
+        error: 2,
+        message: "Model has error, cannot create account.",
+      });
+    }
+    // Truong hop tao ra tai khoan da ton tai truoc do
+    else if (newAccount === -1) {
+      return res.json({
+        success: false,
+        error: 3,
+        message: "This account was created!",
+      });
+    }
+    // truong hop tao ra account thanh cong
+    else {
+      // tra response cho client
+      return res.status(200).json({
+        success: true,
+        err: -1,
+        data: newAccount,
+      });
+    }
+  } catch (err) {
+    res.json(500).json({
+      success: false,
+      err: 4,
+      message: "Internal server error",
+    });
+  }
+};
 module.exports = {
   getAccounts,
   getAccountById,
   register,
   login,
   refreshAccessToken,
+  createAccount,
 };

@@ -39,9 +39,10 @@ const getAdminByAccountId = async (req, res, next) => {
 const addNewAdmin = async (req, res, next) => {
   try {
     // Lay thong tin admin tu body
-    const { name, phoneNumber, address, email } = req.body;
+    const { name, phoneNumber, address, email, accountId } = req.body;
     // Lay thong tin tai khoan admin
-    const adminAccountId = parseInt(req.accountData.accountId);
+    // Lay avatar
+    const avatarBuffer = req.file.buffer;
     // xac thuc thong tin
     try {
       const adminInfo = await adminSchema.validateAsync({
@@ -50,13 +51,53 @@ const addNewAdmin = async (req, res, next) => {
         address,
         email,
       });
-      // Neu xac thuc thanh cong thi Goi den model de dien thong tin vao
-      const newAdmin = await adminServices.insert(adminInfo, adminAccountId);
-      if (newAdmin === 0) {
-        return next(internalServerError("Model admin bi loi"));
-      } else {
-        res.status(200).json(newAdmin);
-      }
+      const result = await cloudinary.uploader
+        .upload_stream(
+          {
+            resource_type: "raw",
+            width: 200, // Chiều rộng sau khi tải lên
+            height: 200, // Chiều cao sau khi tải lên
+            crop: "fill", // Cắt và điều chỉnh để đảm bảo kích thước
+            quality: "auto:good", // Chất lượng ảnh
+            format: "jpg", // Định dạng ảnh
+          },
+          async (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              res.status(500).json({
+                success: false,
+                err: 1,
+                message: "Loi khi upload anh len cloudinary!",
+              });
+            } else {
+              // Luu thong tin nguoi dung vao co so du lieu
+              const newInfo = {
+                name,
+                phoneNumber,
+                address,
+                email,
+                avatar: result.secure_url,
+                accountId,
+              };
+              const modelResult = await adminServices.insert(
+                newInfo.name,
+                newInfo.phoneNumber,
+                newInfo.address,
+                newInfo.email,
+                newInfo.avatar,
+                newInfo.accountId
+              );
+              if (modelResult !== 0)
+                // tra ve ket qua cho nguoi dung
+                res.json({
+                  err: -1,
+                  success: true,
+                  data: newInfo,
+                });
+            }
+          }
+        )
+        .end(avatarBuffer); // Kết thúc việc tải lên bằng cách truyền dữ liệu tệp
     } catch (err) {
       return next(badRequest("Thong tin nhap vao khong dung."));
     }

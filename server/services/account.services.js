@@ -21,13 +21,14 @@ const findById = async (accountId) => {
   }
 };
 
-const createAccount = async (username, password) => {
+const createAccount = async (username, password, role) => {
   try {
     const [newAccount, created] = await db.Account.findOrCreate({
       where: { username },
       defaults: {
         username,
         password,
+        role,
       },
     });
     // truong hop da co tai khoan co username ton tai: tra ve -1

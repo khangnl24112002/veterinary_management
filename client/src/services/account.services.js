@@ -17,3 +17,12 @@ export const getAccountById = async (id) => {
     return error;
   }
 };
+
+export const addNewAccount = async (account) => {
+  try {
+    const response = await axiosInstance.post(`/accounts`, account);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

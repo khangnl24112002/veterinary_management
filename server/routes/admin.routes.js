@@ -10,7 +10,13 @@ const router = require("express").Router();
 
 router.get("/", isAuthenticated, admin.getAllAdmins);
 router.get("/:id", isAuthenticated, admin.getAdminByAccountId);
-router.post("/", isAuthenticated, admin.addNewAdmin);
+router.post(
+  "/",
+  isAuthenticated,
+  checkIsAdmin,
+  upload.single("avatar"),
+  admin.addNewAdmin
+);
 router.put(
   "/:id",
   isAuthenticated,
