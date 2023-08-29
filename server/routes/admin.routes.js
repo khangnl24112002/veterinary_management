@@ -12,7 +12,7 @@ router.get("/", isAuthenticated, admin.getAllAdmins);
 router.get("/:id", isAuthenticated, admin.getAdminByAccountId);
 router.post("/", isAuthenticated, admin.addNewAdmin);
 router.put(
-  "/",
+  "/:id",
   isAuthenticated,
   checkIsAdmin,
   upload.single("avatar"),

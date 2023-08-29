@@ -8,13 +8,7 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.user.user);
   const account = JSON.parse(localStorage.getItem("account"));
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user.name,
-    phoneNumber: user.phoneNumber,
-    address: user.address,
-    email: user.email,
-    avatar: user.avatar,
-  });
+
   const [avatar, setAvatar] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
   const [error, setIsError] = useState("");
@@ -29,6 +23,16 @@ const ProfilePage = () => {
     fetchUserData(account.id);
   }, []);
 
+  const [formData, setFormData] = useState({
+    name: user.name,
+    phoneNumber: user.phoneNumber,
+    address: user.address,
+    email: user.email,
+    avatar: user.avatar,
+    id: user.id,
+    accountId: user.accountId,
+  });
+
   const handleEdit = () => {
     setEditing(true);
   };
@@ -40,11 +44,15 @@ const ProfilePage = () => {
       updatedData.avatar = avatar;
     }
     try {
-      const response = await axiosInstance.put("/admins", updatedData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosInstance.put(
+        `/admins/${user.id}`,
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       dispatch(updateUser(response.data.data));
       setEditing(false);
       setIsChanged(false);
