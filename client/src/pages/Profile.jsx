@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateUser } from "../actions/userActions/userActions";
 import { getAdminInfo } from "../services/admin.services";
 import axiosInstance from "../axios/axios_interceptor_instance";
 
 const ProfilePage = () => {
-  const user = useSelector((state) => state.user.user);
   const account = JSON.parse(localStorage.getItem("account"));
   const [editing, setEditing] = useState(false);
 
@@ -13,25 +12,23 @@ const ProfilePage = () => {
   const [isChanged, setIsChanged] = useState(false);
   const [error, setIsError] = useState("");
   const dispatch = useDispatch();
-
+  const [formData, setFormData] = useState({});
   useEffect(() => {
     const fetchUserData = async (accountId) => {
       const response = await getAdminInfo(accountId);
       const userInfo = response.data.message;
-      dispatch(updateUser(userInfo));
+      setFormData({
+        name: userInfo.name,
+        phoneNumber: userInfo.phoneNumber,
+        address: userInfo.address,
+        email: userInfo.email,
+        avatar: userInfo.avatar,
+        id: userInfo.id,
+        accountId: userInfo.accountId,
+      });
     };
     fetchUserData(account.id);
   }, []);
-
-  const [formData, setFormData] = useState({
-    name: user.name,
-    phoneNumber: user.phoneNumber,
-    address: user.address,
-    email: user.email,
-    avatar: user.avatar,
-    id: user.id,
-    accountId: user.accountId,
-  });
 
   const handleEdit = () => {
     setEditing(true);
@@ -45,7 +42,7 @@ const ProfilePage = () => {
     }
     try {
       const response = await axiosInstance.put(
-        `/admins/${user.id}`,
+        `/admins/${formData.id}`,
         updatedData,
         {
           headers: {
