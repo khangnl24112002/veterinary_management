@@ -307,10 +307,12 @@ const deleteAccount = async (req, res, next) => {
     }
     // neu tim thay: xoa o Admin(Customer) va Account
     if (account.role === 1) {
-      const adminInfo = await adminServices.findByAccountId(accountId);
+      const adminInfo = await adminServices.getByAccountId(accountId);
       await adminServices.deleteAdmin(adminInfo.id);
     } else {
       // Implement customer deleting here
+      const customerInfo = await customerServices.getByAccountId(accountId);
+      await customerServices.deleteCustomer(customerInfo.id);
     }
     // Delete account
     await accountServices.deleteAccount(accountId);

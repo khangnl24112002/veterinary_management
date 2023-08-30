@@ -73,21 +73,10 @@ const deleteAdmin = async (id) => {
   }
 };
 
-const findByAccountId = async (accountId) => {
-  try {
-    const admin = await db.Admin.findOne({ where: { accountId: accountId } });
-    // neu khong tim thay account theo id thi tra ve -1
-    return admin;
-  } catch (err) {
-    console.log(err);
-    return 0;
-  }
-};
 module.exports = {
   getAll,
   insert,
   update,
   getByAccountId,
   deleteAdmin,
-  findByAccountId,
 };

@@ -54,9 +54,22 @@ const insert = async (
   }
 };
 
+const deleteCustomer = async (id) => {
+  try {
+    const result = await db.Customer.destroy({
+      where: {
+        id,
+      },
+    });
+    return result;
+  } catch (err) {
+    return err;
+  }
+};
 module.exports = {
   getAll,
   insert,
   getById,
   getByAccountId,
+  deleteCustomer,
 };
