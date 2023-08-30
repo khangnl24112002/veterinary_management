@@ -1,4 +1,4 @@
-import { FETCH_ALL_ACCOUNTS } from "../actions/actionTypes";
+import { DELETE_ACCOUNT, FETCH_ALL_ACCOUNTS } from "../actions/actionTypes";
 
 const initialState = {
   accounts: [],
@@ -11,6 +11,15 @@ const accountReducer = (state = initialState, action) => {
       return {
         ...state,
         accounts: action.payload,
+      };
+    }
+    case DELETE_ACCOUNT: {
+      const newAccountList = state.accounts.filter(
+        (account) => account.id !== action.payload
+      );
+      return {
+        ...state,
+        accounts: newAccountList,
       };
     }
     default:

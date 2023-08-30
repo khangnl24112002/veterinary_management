@@ -1,6 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import { deleteAccount } from "../../services/account.services";
+import { deleteAccount as delAccountAction } from "../../actions/accountActions/acountActions";
+import { useDispatch } from "react-redux";
 const Table = ({ data }) => {
+  const dispatch = useDispatch();
+  const handleDeleteAccount = async (id) => {
+    const response = await deleteAccount(id);
+    if (response.data.success) {
+      dispatch(delAccountAction(id));
+    }
+  };
   return (
     <div>
       <table>
@@ -41,20 +51,26 @@ const Table = ({ data }) => {
                 </Link>
               </td>
               <td>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
+                <button
+                  onClick={() => {
+                    handleDeleteAccount(item.id);
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </td>
             </tr>
           ))}

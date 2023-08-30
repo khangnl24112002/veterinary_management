@@ -292,6 +292,41 @@ const createAccount = async (req, res, next) => {
     });
   }
 };
+
+const deleteAccount = async (req, res, next) => {
+  try {
+    const accountId = req.params.id;
+    const account = await accountServices.findById(accountId);
+    // truong hop khong tim thay account
+    if (account === 0) {
+      return res.status(404).json({
+        success: false,
+        err: 1,
+        message: "Cannot find this account",
+      });
+    }
+    // neu tim thay: xoa o Admin(Customer) va Account
+    if (account.role === 1) {
+      const adminInfo = await adminServices.findByAccountId(accountId);
+      await adminServices.deleteAdmin(adminInfo.id);
+    } else {
+      // Implement customer deleting here
+    }
+    // Delete account
+    await accountServices.deleteAccount(accountId);
+    res.status(200).json({
+      success: true,
+      err: -1,
+      message: "Delete successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error",
+    });
+  }
+};
 module.exports = {
   getAccounts,
   getAccountById,
@@ -299,4 +334,5 @@ module.exports = {
   login,
   refreshAccessToken,
   createAccount,
+  deleteAccount,
 };

@@ -110,7 +110,6 @@ const updateAdminInfo = async (req, res, next) => {
   const { name, phoneNumber, address, email } = req.body;
   const avatarBuffer = req.file.buffer;
   const accountId = req.params.id;
-  console.log(1);
   try {
     // Goi upload_stream trong truong hop file anh duoc luu vao bo nho khi dung multer
     const result = await cloudinary.uploader
@@ -165,6 +164,7 @@ const updateAdminInfo = async (req, res, next) => {
       .json({ success: false, err: 1, message: "Loi controller admin" });
   }
 };
+
 module.exports = {
   getAllAdmins,
   addNewAdmin,

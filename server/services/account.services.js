@@ -57,9 +57,23 @@ const findByUsername = async (username) => {
   }
 };
 
+const deleteAccount = async (id) => {
+  try {
+    await db.Account.destroy({
+      where: {
+        id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
+
 module.exports = {
   getAll,
   findById,
   createAccount,
   findByUsername,
+  deleteAccount,
 };

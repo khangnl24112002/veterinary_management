@@ -28,7 +28,7 @@ const ProfilePage = () => {
       });
     };
     fetchUserData(account.id);
-  }, []);
+  }, [account.id]);
 
   const handleEdit = () => {
     setEditing(true);

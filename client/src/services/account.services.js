@@ -26,3 +26,12 @@ export const addNewAccount = async (account) => {
     return error;
   }
 };
+
+export const deleteAccount = async (accountId) => {
+  try {
+    const response = await axiosInstance.delete(`/accounts/${accountId}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

@@ -10,4 +10,5 @@ router.post("/", isAuthenticated, checkIsAdmin, accounts.createAccount);
 router.post("/register", accounts.register);
 router.post("/login", accounts.login);
 router.post("/refresh-token", accounts.refreshAccessToken);
+router.delete("/:id", accounts.deleteAccount);
 module.exports = router;
