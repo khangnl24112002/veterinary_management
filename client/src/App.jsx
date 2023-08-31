@@ -1,18 +1,18 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
+import Login from "./pages/AuthPage/Login";
+import NotFound from "./pages/ErrorPage/NotFound";
 import useToken from "./hooks/useToken";
-import Homepage from "./pages/Homepage";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import ManageDrugs from "./pages/ManageDrugs";
-import ManageImports from "./pages/ManageImports";
-import ManageExports from "./pages/ManageExports";
-import ManageSchedules from "./pages/ManageSchedules";
+import Homepage from "./pages/AuthPage/Homepage";
+import Profile from "./pages/UserPage/Profile";
+import Settings from "./pages/UserPage/Settings";
+import ManageDrugs from "./pages/ManageDrugs/ManageDrugs";
+import ManageImports from "./pages/ManageImports/ManageImports";
+import ManageExports from "./pages/ManageExports/ManageExports";
+import ManageSchedules from "./pages/ManageSchedules/ManageSchedules";
 import ManageAccounts from "./pages/ManageAccounts/ManageAccounts";
 import ViewAccounts from "./pages/ManageAccounts/ViewAccounts";
-import AddNewDrug from "./pages/AddNewDrug";
+import AddNewDrug from "./pages/ManageDrugs/AddNewDrug";
 import AddNewAccount from "./pages/ManageAccounts/AddNewAccount";
 import ViewAccountDetail from "./pages/ManageAccounts/ViewAccountDetail";
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../actions/userActions/userActions";
-import { getAdminInfo } from "../services/admin.services";
-import axiosInstance from "../axios/axios_interceptor_instance";
+import { updateUser } from "../../actions/userActions/userActions";
+import { getAdminInfo } from "../../services/admin.services";
+import axiosInstance from "../../axios/axios_interceptor_instance";
 
 const ProfilePage = () => {
   const account = JSON.parse(localStorage.getItem("account"));

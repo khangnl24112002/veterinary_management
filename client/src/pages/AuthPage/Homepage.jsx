@@ -2,8 +2,8 @@
 import { useDispatch } from "react-redux";
 import Admin from "./Admin";
 import Customer from "./Customer";
-import { logoutUser } from "../actions/authAction/authActions";
-import UnknownError from "./UnknownError";
+import { logoutUser } from "../../actions/authAction/authActions";
+import UnknownError from "../ErrorPage/UnknownError";
 
 const Homepage = ({ removeTokens }) => {
   const dispatch = useDispatch();

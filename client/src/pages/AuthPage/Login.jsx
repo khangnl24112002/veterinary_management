@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../actions/authAction/authActions";
+import { loginUser } from "../../actions/authAction/authActions";
 import { useState } from "react";
 
 const Login = ({ setTokens }) => {
