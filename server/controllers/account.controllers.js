@@ -247,7 +247,7 @@ const createAccount = async (req, res, next) => {
     if (!username || !password || !role) {
       return res.status(400).json({
         success: false,
-        err: 1,
+        error: 1,
         message: "Missing values",
       });
     }
@@ -264,12 +264,12 @@ const createAccount = async (req, res, next) => {
       return res.json({
         success: false,
         error: 2,
-        message: "Model has error, cannot create account.",
+        message: "Server has error, cannot create account.",
       });
     }
     // Truong hop tao ra tai khoan da ton tai truoc do
     else if (newAccount === -1) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         error: 3,
         message: "This account was created!",

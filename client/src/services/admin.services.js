@@ -23,14 +23,16 @@ export const getAdminInfo = async (accountId) => {
 };
 
 export const addNewAdmin = async (adminInfo) => {
-  try {
-    const response = await axiosInstance.post(`/admins`, adminInfo, {
+  return await axiosInstance
+    .post(`/admins`, adminInfo, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
     });
-    return response;
-  } catch (error) {
-    return error;
-  }
 };

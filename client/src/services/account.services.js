@@ -19,12 +19,14 @@ export const getAccountById = async (id) => {
 };
 
 export const addNewAccount = async (account) => {
-  try {
-    const response = await axiosInstance.post(`/accounts`, account);
-    return response;
-  } catch (error) {
-    return error;
-  }
+  return await axiosInstance
+    .post(`/accounts`, account)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
+    });
 };
 
 export const deleteAccount = async (accountId) => {

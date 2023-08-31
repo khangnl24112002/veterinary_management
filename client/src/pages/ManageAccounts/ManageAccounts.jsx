@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 
 const ManageAccounts = () => {
   return (
-    <div>
-      <h1 className="mt-0">Manage Accounts</h1>
+    <div className="">
+      <h1 className="mt-0 pl-5">Manage Accounts</h1>
       <Outlet />
     </div>
   );
