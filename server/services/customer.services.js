@@ -66,10 +66,28 @@ const deleteCustomer = async (id) => {
     return err;
   }
 };
+
+const update = async (name, phoneNumber, address, email, avatar, accountId) => {
+  try {
+    const result = await db.Customer.update(
+      { name, phoneNumber, address, email, avatar },
+      {
+        where: {
+          accountId: accountId,
+        },
+      }
+    );
+    return result;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   getAll,
   insert,
   getById,
   getByAccountId,
   deleteCustomer,
+  update,
 };

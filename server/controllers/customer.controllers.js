@@ -114,8 +114,69 @@ const getCustomers = async (req, res, next) => {
     });
   }
 };
+
+const updateCustomerInfo = async (req, res, next) => {
+  const { name, phoneNumber, address, email } = req.body;
+  const avatarBuffer = req.file.buffer;
+  const accountId = req.params.id;
+  try {
+    // Goi upload_stream trong truong hop file anh duoc luu vao bo nho khi dung multer
+    const result = await cloudinary.uploader
+      .upload_stream(
+        {
+          resource_type: "raw",
+          width: 200, // Chiều rộng sau khi tải lên
+          height: 200, // Chiều cao sau khi tải lên
+          crop: "fill", // Cắt và điều chỉnh để đảm bảo kích thước
+          quality: "auto:good", // Chất lượng ảnh
+          format: "jpg", // Định dạng ảnh
+        },
+        async (error, result) => {
+          if (error) {
+            res.status(500).json({
+              success: false,
+              err: 1,
+              message: "Error! Uploading image fail.",
+            });
+          } else {
+            // Luu thong tin nguoi dung vao co so du lieu
+            const newInfo = {
+              name,
+              phoneNumber,
+              address,
+              email,
+              avatar: result.secure_url,
+            };
+            const modelResult = await customerServices.update(
+              newInfo.name,
+              newInfo.phoneNumber,
+              newInfo.address,
+              newInfo.email,
+              newInfo.avatar,
+              accountId
+            );
+            if (modelResult !== 0)
+              // tra ve ket qua cho nguoi dung
+              res.json({
+                err: -1,
+                success: true,
+                data: newInfo,
+              });
+          }
+        }
+      )
+      .end(avatarBuffer); // Kết thúc việc tải lên bằng cách truyền dữ liệu tệp
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error: Customer controller",
+    });
+  }
+};
 module.exports = {
   getCustomerInfo,
   addNewCustomer,
   getCustomers,
+  updateCustomerInfo,
 };
