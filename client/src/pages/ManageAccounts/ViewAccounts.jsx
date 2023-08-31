@@ -10,7 +10,7 @@ const ViewAccounts = () => {
   useEffect(() => {
     const getAccs = async () => {
       const res = await getAllAccounts();
-      dispatch(fetchAccounts(res.data.data));
+      dispatch(fetchAccounts(res.data));
     };
     getAccs();
   }, [dispatch]);

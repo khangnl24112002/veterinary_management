@@ -21,9 +21,12 @@ const ViewAccountDetail = () => {
   useEffect(() => {
     const getInfo = async () => {
       const res = await getAccountById(id);
-      const accountInfo = res.data.data.accountInfo;
-      accountInfo["role"] = res.data.data.account.role;
-      setAccount(accountInfo);
+      if (res.success === true) {
+        const accountInfo = res.data.accountInfo;
+        setAccount(accountInfo);
+      } else {
+        setIsError("Cannot get data!");
+      }
     };
     getInfo();
   }, [id]);
