@@ -70,10 +70,26 @@ const deleteAccount = async (id) => {
   }
 };
 
+const updateAccount = async (id, password) => {
+  try {
+    await db.Account.update(
+      { password: password },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
 module.exports = {
   getAll,
   findById,
   createAccount,
   findByUsername,
   deleteAccount,
+  updateAccount,
 };

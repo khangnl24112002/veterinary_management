@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { getAdminInfo } from "../../services/admin.services";
-import axiosInstance from "../../axios/axios_interceptor_instance";
-import { useDispatch } from "react-redux";
-import { updateUser } from "../../actions/userActions/userActions";
+import { getAccountById, updateAccount } from "../../services/account.services";
 
 const Account = () => {
   // useState luu trang thai da edit hay chua
   const [editing, setEditing] = useState(false);
-
+  // Chinh sua button edit
+  const handleEdit = () => {
+    setEditing(!editing);
+  };
   // Su dung react-hook-form
   const {
     register,
@@ -17,37 +16,23 @@ const Account = () => {
     formState: { errors },
   } = useForm();
 
-  // Su dung useDispatch
-  const dispatch = useDispatch();
-
   // luu trang thai error
   const [error, setIsError] = useState("");
 
-  // Chinh sua button edit
-  const handleEdit = () => {
-    setEditing(true);
-  };
-
-  // Khi submit du lieu len server
+  // Khi submit du lieu len server de thay doi account
   const onSubmit = async (account) => {
-    console.log(account);
-    const updatedData = { ...formData };
-    try {
-      const response = await axiosInstance.put(
-        `/admins/${formData.id}`,
-        updatedData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      dispatch(updateUser(response.data.data));
-      setEditing(false);
-    } catch (error) {
-      setIsError(
-        "An error has occured when saving your info! Please try after."
-      );
+    // check Password
+    if (account.password !== account.confirmPassword) {
+      setIsError("Password and Confirm password not match!");
+      return;
+    } else {
+      const response = await updateAccount(formData.id, account);
+      console.log(response);
+      if (response.success === true) {
+        setIsError("Update successfully!");
+      } else {
+        setIsError(response.message);
+      }
     }
   };
 
@@ -59,17 +44,8 @@ const Account = () => {
   // Lay du lieu nguoi dung tu server
   useEffect(() => {
     const fetchUserData = async (accountId) => {
-      const response = await getAdminInfo(accountId);
-      const userInfo = response.data.message;
-      setFormData({
-        name: userInfo.name,
-        phoneNumber: userInfo.phoneNumber,
-        address: userInfo.address,
-        email: userInfo.email,
-        avatar: userInfo.avatar,
-        id: userInfo.id,
-        accountId: userInfo.accountId,
-      });
+      const response = await getAccountById(accountId);
+      setFormData(response.data.account);
     };
     fetchUserData(account.id);
   }, [account.id]);
@@ -83,13 +59,9 @@ const Account = () => {
             <input
               type="text"
               className="w-full border rounded px-3 py-2"
-              {...register("username", {
-                required: "Username is required",
-              })}
+              disabled
+              value={formData.username}
             />
-            {errors.username && (
-              <p className="text-red-500">{errors.username.message}</p>
-            )}
           </div>
           <div className="mb-3">
             <label className="block font-medium mb-1">Password:</label>
@@ -126,9 +98,13 @@ const Account = () => {
             >
               Save
             </button>
-            <Link to="../" className="text-blue-500 hover:underline">
+            <button
+              type="button"
+              onClick={handleEdit}
+              className="text-blue-500 hover:underline"
+            >
               Back
-            </Link>
+            </button>
           </div>
         </form>
       ) : (
@@ -171,7 +147,7 @@ const Account = () => {
             />
           </div>
           {/**Bottom buttons */}
-          <div className="col-span-2 flex flex-col items-center mt-48">
+          <div className="col-span-2 flex flex-col items-center">
             <p className="text-red-500">{error}</p>
             <button
               type="submit"
@@ -180,9 +156,6 @@ const Account = () => {
             >
               Change password
             </button>
-            <Link to="../" className="text-blue-500 hover:underline">
-              Back
-            </Link>
           </div>
         </div>
       )}

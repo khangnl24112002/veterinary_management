@@ -57,6 +57,7 @@ const getAccountById = async (req, res, next) => {
     // neu tra ve thanh cong account thi se gui account ve phia nguoi dung
     else {
       // Lay thong tin tai khoan (neu co)
+      const transformAccount = transformedAccounts([account]);
       if (account.role === 1) {
         accountInfo = await adminServices.getByAccountId(accountId);
       } else if (account.role === 2) {
@@ -66,7 +67,7 @@ const getAccountById = async (req, res, next) => {
         success: true,
         err: -1,
         data: {
-          account: account,
+          account: transformAccount[0],
           accountInfo: accountInfo,
         },
       });
@@ -329,6 +330,45 @@ const deleteAccount = async (req, res, next) => {
     });
   }
 };
+
+const updateAccount = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        err: 2,
+        message: "Password and confirm password are not matching!",
+      });
+    } else {
+      // hashPassword
+      const hashPassword = bcrypt.hashSync(password, saltRounds);
+      // Update account
+      const result = await accountServices.updateAccount(id, hashPassword);
+      if (result !== 0) {
+        return res.status(200).json({
+          success: true,
+          err: -1,
+          data: result,
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          err: 1,
+          message: "Internal server error (Model can't update account)",
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   getAccounts,
   getAccountById,
@@ -337,4 +377,5 @@ module.exports = {
   refreshAccessToken,
   createAccount,
   deleteAccount,
+  updateAccount,
 };

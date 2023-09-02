@@ -1,4 +1,5 @@
-const moment = require("moment");
+import { transformDate } from "./transformDate";
+
 const transformedAccounts = (accounts) => {
   return accounts.map((account) => {
     const { id, username, role, createdAt, updatedAt } = account;
@@ -12,8 +13,8 @@ const transformedAccounts = (accounts) => {
       id,
       username,
       role: transformedRole,
-      createdAt: moment(createdAt).format("YYYY-MM-DD"),
-      updatedAt: moment(updatedAt).format("YYYY-MM-DD"),
+      createdAt: transformDate(createdAt),
+      updatedAt: transformDate(updatedAt),
     };
   });
 };

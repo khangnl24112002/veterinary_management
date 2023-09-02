@@ -41,3 +41,14 @@ export const deleteAccount = async (accountId) => {
     return error;
   }
 };
+
+export const updateAccount = async (accountId, account) => {
+  return await axiosInstance
+    .put(`/accounts/${accountId}`, account)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
+    });
+};
