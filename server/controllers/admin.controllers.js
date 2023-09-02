@@ -158,13 +158,11 @@ const updateAdminInfo = async (req, res, next) => {
       )
       .end(avatarBuffer); // Kết thúc việc tải lên bằng cách truyền dữ liệu tệp
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        err: 1,
-        message: "Internal server error: Admin controller",
-      });
+    res.status(500).json({
+      success: false,
+      err: 1,
+      message: "Internal server error: Admin controller",
+    });
   }
 };
 

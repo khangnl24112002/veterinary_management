@@ -4,11 +4,13 @@ import { getAccountById, updateAccount } from "../../services/account.services";
 
 const Account = () => {
   // useState luu trang thai da edit hay chua
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState();
+
   // Chinh sua button edit
   const handleEdit = () => {
     setEditing(!editing);
   };
+
   // Su dung react-hook-form
   const {
     register,
@@ -27,7 +29,6 @@ const Account = () => {
       return;
     } else {
       const response = await updateAccount(formData.id, account);
-      console.log(response);
       if (response.success === true) {
         setIsError("Update successfully!");
       } else {
@@ -41,6 +42,7 @@ const Account = () => {
 
   // Luu tru du lieu account cua nguoi dung
   const [formData, setFormData] = useState({});
+
   // Lay du lieu nguoi dung tu server
   useEffect(() => {
     const fetchUserData = async (accountId) => {
@@ -49,6 +51,7 @@ const Account = () => {
     };
     fetchUserData(account.id);
   }, [account.id]);
+
   return (
     <div>
       {editing ? (
@@ -100,7 +103,10 @@ const Account = () => {
             </button>
             <button
               type="button"
-              onClick={handleEdit}
+              onClick={() => {
+                handleEdit();
+                setIsError("");
+              }}
               className="text-blue-500 hover:underline"
             >
               Back

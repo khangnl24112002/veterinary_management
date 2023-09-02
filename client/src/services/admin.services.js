@@ -1,16 +1,18 @@
 import axiosInstance from "../axios/axios_interceptor_instance";
 
-export const updateAdminInfo = async (updatedData) => {
-  try {
-    const response = await axiosInstance.put("/admins", updatedData, {
+export const updateAdminInfo = async (accountId, updatedData) => {
+  return await axiosInstance
+    .put(`/admins/${accountId}`, updatedData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
     });
-    return response;
-  } catch (error) {
-    return error;
-  }
 };
 
 export const getAdminInfo = async (accountId) => {

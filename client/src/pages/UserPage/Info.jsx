@@ -1,19 +1,69 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { getAccountById } from "../../services/account.services";
+import { updateAdminInfo } from "../../services/admin.services";
+import { updateCustomerInfo } from "../../services/customer.services";
 
 const Info = () => {
+  // Lay id cua account
+  const account = JSON.parse(localStorage.getItem("account"));
+
+  // useState luu trang thai da edit hay chua
   const [editing, setEditing] = useState(false);
+
+  // chinh sua button edit
+  const handleEdit = () => {
+    setEditing(!editing);
+  };
+
+  // Su dung react-hook-form
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  // luu trang thai error
   const [error, setIsError] = useState("");
+
+  // Khi submit du lieu len server de thay doi Info
+  const onSubmit = async (acc) => {
+    acc.avatar = acc.avatar[0];
+    // Goi API
+    let response;
+    // truong hop la admin
+    if (account.role === 1) {
+      response = await updateAdminInfo(account.id, acc);
+    } else {
+      response = await updateCustomerInfo(account.id, acc);
+    }
+    if (response.success) {
+      setIsError("Update successfully!");
+    } else {
+      setIsError(response.message);
+    }
+    setFormData(response.data);
+  };
+
+  // Luu tru du lieu account cua nguoi dung
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    const fetchUserData = async (accountId) => {
+      const response = await getAccountById(accountId);
+      const accountInfo = response.data.accountInfo;
+      setFormData(accountInfo);
+      reset({ ...accountInfo });
+    };
+    fetchUserData(account.id);
+  }, [account.id]);
+
   return (
     <div>
       {editing ? (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-semibold mb-4">
             Change User Information
           </h2>
@@ -84,9 +134,16 @@ const Info = () => {
             >
               Save
             </button>
-            <Link to="../" className="text-blue-500 hover:underline">
+            <button
+              type="button"
+              onClick={() => {
+                handleEdit();
+                setIsError("");
+              }}
+              className="text-blue-500 hover:underline"
+            >
               Back
-            </Link>
+            </button>
           </div>
         </form>
       ) : (
@@ -142,12 +199,10 @@ const Info = () => {
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4 mt-4"
+              onClick={handleEdit}
             >
               Change Info
             </button>
-            <Link to="../" className="text-blue-500 hover:underline">
-              Back
-            </Link>
           </div>
         </div>
       )}

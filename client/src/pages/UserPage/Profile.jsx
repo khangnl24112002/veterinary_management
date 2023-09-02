@@ -1,4 +1,5 @@
 import Account from "./Account";
+import Info from "./Info";
 
 const ProfilePage = () => {
   return (
@@ -8,7 +9,7 @@ const ProfilePage = () => {
           {/* Left Section: Account Setup */}
           <Account />
           {/* Right Section: User Information */}
-          <h1>ABC</h1>
+          <Info />
         </div>
       </div>
     </>
