@@ -16,6 +16,7 @@ const Admin = ({ handleLogout }) => {
       const response = await getAccountById(accountId);
       // Goi len redux
       dispatch(updateUser(response.data));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     };
     fetchUserData(account.id);
   });

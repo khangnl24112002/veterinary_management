@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import logoImage from "../../assets/imgs/logo.jpg";
 import { Link } from "react-router-dom";
 import DigitalClock from "../DigitalClock/DigitalClock";
+import { useSelector } from "react-redux";
 
 const Header = ({ handleLogout }) => {
+  const avatar = useSelector((state) => state.user.accountInfo.avatar);
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <div className="flex w-[100%] justify-around border-b-2 border-slate-300  mb-5 pb-3 pt-3">
@@ -79,8 +80,8 @@ const Header = ({ handleLogout }) => {
         <div className="relative">
           <img
             className="rounded-full w-12 h-12 cursor-pointer"
-            src={logoImage}
-            alt="avatar"
+            src={avatar}
+            alt={avatar}
             onClick={() => setShowDropdown(!showDropdown)}
           />
           {showDropdown && (

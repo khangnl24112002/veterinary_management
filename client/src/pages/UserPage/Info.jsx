@@ -43,7 +43,6 @@ const Info = () => {
       response = await updateCustomerInfo(account.id, acc);
     }
     if (response.success) {
-      console.log(response);
       setIsError("Update successfully!");
       dispatch(updateAccountInfo(response.data));
     } else {
