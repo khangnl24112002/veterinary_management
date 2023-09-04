@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { getAccountById, updateAccount } from "../../services/account.services";
+import { updateAccount } from "../../services/account.services";
+import { useSelector } from "react-redux";
 
 const Account = () => {
   // useState luu trang thai da edit hay chua
-  const [editing, setEditing] = useState();
+  const [editing, setEditing] = useState(false);
 
   // Chinh sua button edit
   const handleEdit = () => {
@@ -38,19 +39,18 @@ const Account = () => {
   };
 
   // Lay du lieu account hien tai tu localStorage
-  const account = JSON.parse(localStorage.getItem("account"));
+  // const account = JSON.parse(localStorage.getItem("account"));
 
-  // Luu tru du lieu account cua nguoi dung
-  const [formData, setFormData] = useState({});
-
+  // Su dung useSelector de lay du lieu tu redux
+  const formData = useSelector((state) => state.user.account);
   // Lay du lieu nguoi dung tu server
-  useEffect(() => {
-    const fetchUserData = async (accountId) => {
-      const response = await getAccountById(accountId);
-      setFormData(response.data.account);
-    };
-    fetchUserData(account.id);
-  }, [account.id]);
+  // useEffect(() => {
+  //   const fetchUserData = async (accountId) => {
+  //     const response = await getAccountById(accountId);
+  //     setFormData(response.data.account);
+  //   };
+  //   fetchUserData(account.id);
+  // }, [account.id]);
 
   return (
     <div>

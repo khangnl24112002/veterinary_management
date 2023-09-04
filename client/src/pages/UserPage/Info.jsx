@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getAccountById } from "../../services/account.services";
 import { updateAdminInfo } from "../../services/admin.services";
 import { updateCustomerInfo } from "../../services/customer.services";
-
+import { useDispatch, useSelector } from "react-redux";
+import { updateAccountInfo } from "../../actions/userActions/userActions";
 const Info = () => {
   // Lay id cua account
   const account = JSON.parse(localStorage.getItem("account"));
@@ -28,6 +28,9 @@ const Info = () => {
   // luu trang thai error
   const [error, setIsError] = useState("");
 
+  // Goi dispatch
+  const dispatch = useDispatch();
+
   // Khi submit du lieu len server de thay doi Info
   const onSubmit = async (acc) => {
     acc.avatar = acc.avatar[0];
@@ -40,25 +43,29 @@ const Info = () => {
       response = await updateCustomerInfo(account.id, acc);
     }
     if (response.success) {
+      console.log(response);
       setIsError("Update successfully!");
+      dispatch(updateAccountInfo(response.data));
     } else {
       setIsError(response.message);
     }
-    setFormData(response.data);
   };
 
   // Luu tru du lieu account cua nguoi dung
-  const [formData, setFormData] = useState({});
-
+  // const [formData, setFormData] = useState({});
+  const formData = useSelector((state) => state.user.accountInfo);
   useEffect(() => {
-    const fetchUserData = async (accountId) => {
-      const response = await getAccountById(accountId);
-      const accountInfo = response.data.accountInfo;
-      setFormData(accountInfo);
-      reset({ ...accountInfo });
-    };
-    fetchUserData(account.id);
-  }, [account.id]);
+    reset({ ...formData });
+  }, [formData]);
+  // useEffect(() => {
+  //   const fetchUserData = async (accountId) => {
+  //     const response = await getAccountById(accountId);
+  //     const accountInfo = response.data.accountInfo;
+  //     setFormData(accountInfo);
+  //     reset({ ...accountInfo });
+  //   };
+  //   fetchUserData(account.id);
+  // }, [account.id]);
 
   return (
     <div>
@@ -189,8 +196,7 @@ const Info = () => {
             <label className="block font-medium mb-1">Avatar:</label>
             <img
               src={formData.avatar}
-              width={200}
-              height={200}
+              style={{ width: "200px", height: "200px" }}
               alt={formData.avatar}
             />
           </div>
