@@ -8,9 +8,9 @@ const jwt = require("jsonwebtoken");
 import transformedAccounts from "../helpers/transformAccount";
 const {
   internalServerError,
-  badRequest,
   conflict,
-  unauthorized,
+  successResponse,
+  errorResponse,
 } = require("../middlewares/handleError");
 const { verifyRefresh } = require("../middlewares/isAuthenticated");
 const saltRounds = 10;
@@ -20,24 +20,16 @@ const getAccounts = async (req, res, next) => {
     const accounts = await accountServices.getAll();
     // neu model bi loi
     if (!accounts) {
-      return res.status(500).json({
-        success: false,
-        err: 1,
-        message: "Account model bi loi",
-      });
+      return errorResponse(res, 500, 1, "Account model has errors");
     }
     // neu query thanh cong => bien doi du lieu tren server de gui ve cho client
     else {
       const transformedAcc = transformedAccounts(accounts);
-      res.status(200).json({
-        success: true,
-        err: -1,
-        data: transformedAcc,
-      });
+      return successResponse(res, 200, -1, transformedAcc);
     }
   } catch (err) {
     console.log(err);
-    return next(internalServerError("Account controller bi loi"));
+    return errorResponse(res, 500, 1, "Account controller has errors");
   }
 };
 

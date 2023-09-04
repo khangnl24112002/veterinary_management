@@ -5,13 +5,7 @@ const {
 } = require("../middlewares/handleError");
 
 const customerServices = require("../services/customer.services");
-import { v2 as cloudinary } from "cloudinary";
-
-cloudinary.config({
-  cloud_name: "daexxhimb",
-  api_key: "928598793819699",
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import cloudinary from "../upload/cloudinary_config";
 
 const getCustomerInfo = async (req, res, next) => {
   try {

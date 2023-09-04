@@ -3,13 +3,8 @@ const {
   internalServerError,
   badRequest,
 } = require("../middlewares/handleError");
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../upload/cloudinary_config";
 
-cloudinary.config({
-  cloud_name: "daexxhimb",
-  api_key: "928598793819699",
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 const adminServices = require("../services/admin.services");
 
 const getAllAdmins = async (req, res, next) => {

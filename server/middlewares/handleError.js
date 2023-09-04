@@ -1,5 +1,21 @@
 var createError = require("http-errors");
 
+const errorResponse = (res, statusCode, err, message) => {
+  return res.status(statusCode).json({
+    success: false,
+    err: err,
+    message: message,
+  });
+};
+
+const successResponse = (res, statusCode, err, data) => {
+  return res.status(statusCode).json({
+    success: true,
+    err: err,
+    data: data,
+  });
+};
+
 const internalServerError = (message) => {
   let error;
   if (message) {
@@ -56,4 +72,6 @@ module.exports = {
   conflict,
   unauthorized,
   notFound,
+  errorResponse,
+  successResponse,
 };
