@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAccountById } from "../../services/account.services";
-import axiosInstance from "../../axios/axios_interceptor_instance";
-
+import { updateAdminInfo } from "../../services/admin.services";
+import { updateCustomerInfo } from "../../services/customer.services";
+import { useForm } from "react-hook-form";
 const ViewAccountDetail = () => {
   const { id } = useParams();
   const [account, setAccount] = useState({
@@ -14,10 +15,21 @@ const ViewAccountDetail = () => {
     avatar: "",
     role: "",
   });
-  const [avatar, setAvatar] = useState(null);
-  const [isChanged, setIsChanged] = useState(false);
+  // Su dung react-hook-form
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // luu trang thai error
   const [error, setIsError] = useState("");
+
+  // luu trang thai edit
   const [editing, setEditing] = useState(false);
+
+  // goi API lay account info
   useEffect(() => {
     const getInfo = async () => {
       const res = await getAccountById(id);
@@ -29,131 +41,176 @@ const ViewAccountDetail = () => {
       }
     };
     getInfo();
-  }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    reset({ ...account });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
 
   const handleEdit = () => {
-    setEditing(true);
+    setEditing(!editing);
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    const updatedData = { ...account };
-    if (avatar) {
-      updatedData.avatar = avatar;
+  const onSubmit = async (data) => {
+    data.avatar = data.avatar[0];
+    let response;
+    if (account.role === 1) {
+      response = await updateAdminInfo(id, data);
+    } else {
+      response = await updateCustomerInfo(id, data);
     }
-    try {
-      let response;
-      if (account.role === 1) {
-        response = await axiosInstance.put(`/admins/${id}`, updatedData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-      } else {
-        response = await axiosInstance.put(`/customers/${id}`, updatedData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-      }
-      if (response.data.success === false) {
-        setIsError(response.data.message);
-      } else {
-        setIsError("Update successfully");
-      }
-      setEditing(false);
-      setIsChanged(false);
-    } catch (error) {
-      setIsError(
-        "An error has occured when saving your info! Please try after."
-      );
+    if (response.success === false) {
+      setIsError(response.message);
+    } else {
+      setIsError("Update successfully");
     }
-  };
-
-  const handleChange = (field, value) => {
-    setAccount((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
-    setIsChanged(true);
-  };
-
-  const handleAvatarChange = (e) => {
-    setAvatar(e.target.files[0]);
-    setIsChanged(true);
   };
 
   return (
     <div>
-      <h1>Profile Page</h1>
-      <div>
-        <label>Name:</label>
-        {editing ? (
-          <input
-            type="text"
-            value={account.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-          />
-        ) : (
-          <p>{account.name}</p>
-        )}
-      </div>
-      <div>
-        <label>Phone Number:</label>
-        {editing ? (
-          <input
-            type="text"
-            value={account.phoneNumber}
-            onChange={(e) => handleChange("phoneNumber", e.target.value)}
-          />
-        ) : (
-          <p>{account.phoneNumber}</p>
-        )}
-      </div>
-      <div>
-        <label>Address:</label>
-        {editing ? (
-          <input
-            type="text"
-            value={account.address}
-            onChange={(e) => handleChange("address", e.target.value)}
-          />
-        ) : (
-          <p>{account.address}</p>
-        )}
-      </div>
-      <div>
-        <label>Email:</label>
-        {editing ? (
-          <input
-            type="text"
-            value={account.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-          />
-        ) : (
-          <p>{account.email}</p>
-        )}
-      </div>
-      <div>
-        <label>Avatar:</label>
-        {editing ? (
-          <input type="file" accept="image/*" onChange={handleAvatarChange} />
-        ) : (
-          <img className="w-20 h-20" src={account.avatar} alt="avatar" />
-        )}
-      </div>
       {editing ? (
-        <div>
-          <button onClick={handleSave} disabled={!isChanged}>
-            Save
-          </button>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h2 className="text-2xl font-semibold mb-4">Edit Account Detail</h2>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Name:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              {...register("name", { required: "Name is required" })}
+            />
+            {errors.name && (
+              <p className="text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Phone Number:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              {...register("phoneNumber", {
+                required: "Phone number is required",
+              })}
+            />
+            {errors.phoneNumber && (
+              <p className="text-red-500">{errors.phoneNumber.message}</p>
+            )}
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Address:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              {...register("address", { required: "Address is required" })}
+            />
+            {errors.address && (
+              <p className="text-red-500">{errors.address.message}</p>
+            )}
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Email:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              {...register("email", { required: "Email is required" })}
+            />
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Avatar:</label>
+            <input
+              type="file"
+              accept="image/*"
+              className="w-full border rounded px-3 py-2"
+              {...register("avatar", { required: "Avatar is required" })}
+            />
+            {errors.avatar && (
+              <p className="text-red-500">{errors.avatar.message}</p>
+            )}
+          </div>
+          {/* Bottom Buttons */}
+          <div className="col-span-2 flex flex-col items-center">
+            <p className="text-red-500">{error}</p>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4 mt-4"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="text-blue-500 hover:underline"
+              onClick={() => {
+                handleEdit();
+                setIsError("");
+              }}
+            >
+              Back
+            </button>
+          </div>
+        </form>
       ) : (
         <div>
-          <button onClick={handleEdit}>Edit</button>
+          <h2 className="text-2xl font-semibold mb-4">User Information</h2>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Name:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              disabled
+              value={account.name}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Phone Number:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              disabled
+              value={account.phoneNumber}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Address:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              disabled
+              value={account.address}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Email:</label>
+            <input
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              disabled
+              value={account.email}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium mb-1">Avatar:</label>
+            <img
+              src={account.avatar}
+              style={{ width: "200px", height: "200px" }}
+              alt={account.avatar}
+            />
+          </div>
+          {/* Bottom Buttons */}
+          <div className="col-span-2 flex flex-col items-center">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4 mt-4"
+              onClick={handleEdit}
+            >
+              Change Account Info
+            </button>
+          </div>
         </div>
       )}
-      {error && <p>Error: {error}</p>}
     </div>
   );
 };
