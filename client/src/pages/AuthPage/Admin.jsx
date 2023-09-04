@@ -22,9 +22,9 @@ const Admin = ({ handleLogout }) => {
   });
 
   return (
-    <div className="flex flex-row overflow-hidden h-screen">
+    <div className="flex flex-row h-screen">
       <Navbar />
-      <div className="flex flex-col w-[100%] flex-1">
+      <div className="flex flex-col w-[100%] flex-1 overflow-x-auto overflow-y-auto max-h-screen">
         <Header handleLogout={handleLogout} />
         <Outlet />
       </div>
