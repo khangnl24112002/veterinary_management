@@ -56,15 +56,6 @@ const Info = () => {
   useEffect(() => {
     reset({ ...formData });
   }, [formData]);
-  // useEffect(() => {
-  //   const fetchUserData = async (accountId) => {
-  //     const response = await getAccountById(accountId);
-  //     const accountInfo = response.data.accountInfo;
-  //     setFormData(accountInfo);
-  //     reset({ ...accountInfo });
-  //   };
-  //   fetchUserData(account.id);
-  // }, [account.id]);
 
   return (
     <div>

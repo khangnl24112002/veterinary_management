@@ -38,19 +38,8 @@ const Account = () => {
     }
   };
 
-  // Lay du lieu account hien tai tu localStorage
-  // const account = JSON.parse(localStorage.getItem("account"));
-
   // Su dung useSelector de lay du lieu tu redux
   const formData = useSelector((state) => state.user.account);
-  // Lay du lieu nguoi dung tu server
-  // useEffect(() => {
-  //   const fetchUserData = async (accountId) => {
-  //     const response = await getAccountById(accountId);
-  //     setFormData(response.data.account);
-  //   };
-  //   fetchUserData(account.id);
-  // }, [account.id]);
 
   return (
     <div>
