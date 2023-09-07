@@ -11,21 +11,39 @@ const getAll = async (category) => {
   return result;
 };
 
-const fingById = (id) => {};
+const findById = async (id) => {
+  const result = await db.Drug.findByPk(id);
+  return result;
+};
 
 const insert = async (drug) => {
   const result = await db.Drug.create(drug);
   return result;
 };
 
-const update = async (id, drug) => {};
+const update = async (id, drug) => {
+  const oldDrug = await db.Drug.findByPk(id);
+  if (!oldDrug) return 0;
+  await db.Drug.update(
+    {
+      name: drug.name,
+      type: drug.type,
+      usage: drug.usage,
+      dosage: drug.dosage,
+      imageUrl: drug.imageUrl,
+    },
+    { where: { id } }
+  );
+  const updatedDrug = await db.Drug.findByPk(id);
+  return updatedDrug;
+};
 
 const delDrug = async (id) => {};
 
 const getTypes = async () => {};
 module.exports = {
   getAll,
-  fingById,
+  findById,
   insert,
   update,
   delDrug,
