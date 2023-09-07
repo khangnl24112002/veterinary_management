@@ -18,7 +18,10 @@ const customerSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+const drugSchema = Joi.object({});
+
 module.exports = {
   adminSchema,
   customerSchema,
+  drugSchema,
 };
