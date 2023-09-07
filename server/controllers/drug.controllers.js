@@ -8,7 +8,15 @@ const {
 
 import cloudinary from "../upload/cloudinary_config";
 
-const getDrugs = async (req, res, next) => {};
+const getDrugs = async (req, res, next) => {
+  try {
+    const { category } = req.query;
+    const drugs = await drugServices.getAll(category);
+    return successResponse(res, 200, -1, drugs);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server errors");
+  }
+};
 
 const getDrugById = async (req, res, next) => {};
 
@@ -16,20 +24,15 @@ const addNewDrug = async (req, res, next) => {
   try {
     const { name, type, usage, dosage, imageUrl } = req.body;
     // Validate data
+    const drug = { name, type, usage, dosage, imageUrl };
     try {
-      await drugSchema.validateAsync({
-        name,
-        type,
-        usage,
-        dosage,
-        imageUrl,
-      });
+      await drugSchema.validateAsync(drug);
     } catch (err) {
       return errorResponse(res, 400, 1, "Validate error");
     }
     // add new drugs by calling services
-    const result = drugServices.insert({ name, type, usage, dosage, imageUrl });
-    return successResponse(res, 201, -1, result);
+    const result = await drugServices.insert(drug);
+    return successResponse(res, 201, -1, drug);
   } catch (error) {
     return errorResponse(res, 500, 1, "Internal server errors");
   }
