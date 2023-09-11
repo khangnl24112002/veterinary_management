@@ -38,7 +38,14 @@ const update = async (id, drug) => {
   return updatedDrug;
 };
 
-const delDrug = async (id) => {};
+const delDrug = async (id) => {
+  const result = await db.Drug.destroy({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 
 const getTypes = async () => {};
 module.exports = {
