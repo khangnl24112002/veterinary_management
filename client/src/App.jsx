@@ -12,9 +12,11 @@ import ManageExports from "./pages/ManageExports/ManageExports";
 import ManageSchedules from "./pages/ManageSchedules/ManageSchedules";
 import ManageAccounts from "./pages/ManageAccounts/ManageAccounts";
 import ViewAccounts from "./pages/ManageAccounts/ViewAccounts";
-import AddNewDrug from "./pages/ManageDrugs/AddNewDrug";
 import AddNewAccount from "./pages/ManageAccounts/AddNewAccount";
 import ViewAccountDetail from "./pages/ManageAccounts/ViewAccountDetail";
+import ViewDrugDetail from "./pages/ManageDrugs/ViewDrugDetail";
+import ViewDrugs from "./pages/ManageDrugs/ViewDrugs";
+import AddNewDrug from "./pages/ManageDrugs/AddNewDrug";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -30,7 +32,9 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="manage_drugs" element={<ManageDrugs />}>
-            <Route path="add_new_drugs" element={<AddNewDrug />} />
+            <Route path="" element={<ViewDrugs />} />
+            <Route path="addNewDrugs" element={<AddNewDrug />} />
+            <Route path=":id" element={<ViewDrugDetail />} />
           </Route>
           <Route path="manage_imports" element={<ManageImports />} />
           <Route path="manage_exports" element={<ManageExports />} />
