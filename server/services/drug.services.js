@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db, { Sequelize, sequelize } from "../models/index";
 
 const getAll = async (category) => {
   const whereClause = {};
@@ -47,11 +47,18 @@ const delDrug = async (id) => {
   return result;
 };
 
-const getTypes = async () => {};
+const getCategories = async () => {
+  return await db.Drug.findAll({
+    attributes: [
+      [Sequelize.fn("DISTINCT", Sequelize.col("type")), "categories"],
+    ],
+  });
+};
 module.exports = {
   getAll,
   findById,
   insert,
   update,
   delDrug,
+  getCategories,
 };

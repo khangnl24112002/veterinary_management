@@ -13,6 +13,8 @@ const router = require("express").Router();
 // Lay danh sach thong tin drug
 router.get("/", isAuthenticated, drug.getDrugs);
 
+router.get("/categories", isAuthenticated, drug.getAllCategories);
+
 // Lay thong tin drug theo id
 router.get("/:id", isAuthenticated, drug.getDrugById);
 

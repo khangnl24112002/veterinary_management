@@ -83,10 +83,19 @@ const deleteDrug = async (req, res, next) => {
   }
 };
 
+const getAllCategories = async (req, res, next) => {
+  try {
+    const categories = await drugServices.getCategories();
+    return successResponse(res, 200, -1, categories);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server errors");
+  }
+};
 module.exports = {
   getDrugById,
   getDrugs,
   addNewDrug,
   updateDrug,
   deleteDrug,
+  getAllCategories,
 };
