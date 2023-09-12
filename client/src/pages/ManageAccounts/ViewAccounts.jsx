@@ -18,13 +18,13 @@ const ViewAccounts = () => {
 
   return (
     <div>
-      <Table data={accounts} />
       <Link
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4 mt-4"
+        className="bg-blue-500 text-white px-10 py-2 my-4 rounded hover:bg-blue-600 focus:outline-none"
         to="addNewAccount"
       >
         Add new account
       </Link>
+      <Table data={accounts} />
     </div>
   );
 };
