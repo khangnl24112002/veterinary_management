@@ -34,17 +34,45 @@ const getDrugById = async (req, res, next) => {
 
 const addNewDrug = async (req, res, next) => {
   try {
-    const { name, type, usage, dosage, imageUrl } = req.body;
+    const { name, type, usage, dosage } = req.body;
+    const imageUrl = req.file.buffer;
     // Validate data
-    const drug = { name, type, usage, dosage, imageUrl };
+    const drug = { name, type, usage, dosage };
     try {
       await drugSchema.validateAsync(drug);
     } catch (err) {
       return errorResponse(res, 400, 1, "Validate error");
     }
-    // add new drugs by calling services
-    const result = await drugServices.insert(drug);
-    return successResponse(res, 201, -1, drug);
+    const upload = await cloudinary.uploader
+      .upload_stream(
+        {
+          resource_type: "raw",
+          width: 200, // Chiều rộng sau khi tải lên
+          height: 200, // Chiều cao sau khi tải lên
+          crop: "fill", // Cắt và điều chỉnh để đảm bảo kích thước
+          quality: "auto:good", // Chất lượng ảnh
+          format: "jpg", // Định dạng ảnh
+        },
+        async (error, result) => {
+          if (error) {
+            console.error("Error uploading to Cloudinary:", error);
+            res.status(500).json({
+              success: false,
+              err: 1,
+              message: "Loi khi upload anh len cloudinary!",
+            });
+          } else {
+            // Luu thong tin nguoi dung vao co so du lieu
+            const newInfo = {
+              ...drug,
+              imageUrl: result.secure_url,
+            };
+            const modelResult = await drugServices.insert(newInfo);
+            return successResponse(res, 201, -1, newInfo);
+          }
+        }
+      )
+      .end(imageUrl);
   } catch (error) {
     return errorResponse(res, 500, 1, "Internal server errors");
   }

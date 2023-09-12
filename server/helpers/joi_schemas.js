@@ -23,7 +23,6 @@ const drugSchema = Joi.object({
   type: Joi.string().required(),
   usage: Joi.string().required(),
   dosage: Joi.string().required(),
-  imageUrl: Joi.string().required(),
 });
 
 module.exports = {
