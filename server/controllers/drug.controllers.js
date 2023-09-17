@@ -75,9 +75,18 @@ const addNewDrug = async (req, res, next) => {
                 unitPrice: 0,
                 drugId: modelResult.id,
               };
-              await drugWarehouseServices.insert(drugWarehouseRecord);
+              const newResult = await drugWarehouseServices.insert(
+                drugWarehouseRecord
+              );
+              if (newResult) {
+                const drugInfo = await drugServices.findById(
+                  parseInt(modelResult.id)
+                );
+                return successResponse(res, 201, -1, drugInfo);
+              } else {
+                return errorResponse(res, 500, 1, "Server has error");
+              }
             }
-            return successResponse(res, 201, -1, modelResult);
           }
         }
       )

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateDrug } from "../../services/drug.services";
-
+import { updateDrug as updateDrugAction } from "../../actions/drugActions/drugActions";
 const ViewDrugDetail = () => {
   const { id } = useParams();
   const [drug, setDrug] = useState({});
@@ -26,11 +26,16 @@ const ViewDrugDetail = () => {
   // Xu li de lay du lieu ban dau
   const drugList = useSelector((state) => state.drug.drug);
 
+  // Dung de dispatch du lieu len redux
+  const dispatch = useDispatch();
+
   useEffect(() => {
     // find Drug
     const drugItem = drugList.find((drug) => drug.id == id);
     // sua lai gia tri cua type
     drugItem.type = "";
+    drugItem["quantity"] = drugItem.Drug_Warehouse.quantity;
+    drugItem["unitPrice"] = drugItem.Drug_Warehouse.unitPrice;
     // Gan gia tri vao state
     setDrug(drugItem);
     reset({ ...drug });
@@ -44,11 +49,12 @@ const ViewDrugDetail = () => {
   const onSubmit = async (data) => {
     data.imageUrl = data.imageUrl[0];
     const response = await updateDrug(id, data);
-    console.log(response);
     if (response.success === false) {
       setIsError(response.message);
     } else {
       setIsError("Update successfully");
+      // dispatch du lieu len tren server
+      dispatch(updateDrugAction(response.data));
     }
   };
 
