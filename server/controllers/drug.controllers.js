@@ -1,6 +1,6 @@
 const { drugSchema } = require("../helpers/joi_schemas");
 const drugServices = require("../services/drug.services");
-
+const drugWarehouseServices = require("../services/drug_warehouse.services");
 const {
   errorResponse,
   successResponse,
@@ -68,6 +68,15 @@ const addNewDrug = async (req, res, next) => {
               imageUrl: result.secure_url,
             };
             const modelResult = await drugServices.insert(newInfo);
+            if (result) {
+              // insert to drug_warehouse info
+              const drugWarehouseRecord = {
+                quantity: 0,
+                unitPrice: 0,
+                drugId: modelResult.id,
+              };
+              await drugWarehouseServices.insert(drugWarehouseRecord);
+            }
             return successResponse(res, 201, -1, modelResult);
           }
         }
