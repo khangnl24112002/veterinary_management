@@ -11,17 +11,21 @@ const insert = async (record) => {
 };
 
 const update = async (id, drugRecord) => {
-  const oldRecord = await db.Drug_Warehouse.findByPk(id);
-  if (!oldDrug) return 0;
+  const oldRecord = await db.Drug_Warehouse.findOne({
+    where: {
+      drugId: id,
+    },
+  });
+  console.log(oldRecord);
+  if (!oldRecord) return 0;
   await db.Drug_Warehouse.update(
     {
       quantity: drugRecord.quantity,
       unitPrice: drugRecord.unitPrice,
     },
-    { where: { id } }
+    { where: { drugId: id } }
   );
-  const updatedDrug = await db.Drug_Warehouse.findByPk(id);
-  return updatedDrug;
+  return 1;
 };
 
 const delDrugRecord = async (id) => {

@@ -6,13 +6,16 @@ const getAll = async (category) => {
     whereClause.type = category;
   }
   const result = await db.Drug.findAll({
+    include: [db.Drug_Warehouse],
     where: whereClause,
   });
   return result;
 };
 
 const findById = async (id) => {
-  const result = await db.Drug.findByPk(id);
+  const result = await db.Drug.findByPk(id, {
+    include: db.Drug_Warehouse,
+  });
   return result;
 };
 

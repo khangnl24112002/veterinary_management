@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 /* eslint-disable react/prop-types */
 const Card = ({ drug }) => {
   return (
@@ -33,7 +35,7 @@ const Card = ({ drug }) => {
             value="button"
             className="shrink basis-1/2 my-4 px-4 py-2 text-white hover:bg-blue-700 bg-blue-500 rounded-lg"
           >
-            View detail
+            <Link to={`${drug.id}`}>View detail</Link>
           </button>
           <button
             value="button"

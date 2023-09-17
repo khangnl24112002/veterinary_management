@@ -31,7 +31,7 @@ router.put(
   "/:id",
   isAuthenticated,
   checkIsAdmin,
-  upload.single("avatar"),
+  upload.single("imageUrl"),
   drug.updateDrug
 );
 

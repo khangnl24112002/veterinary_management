@@ -89,18 +89,70 @@ const addNewDrug = async (req, res, next) => {
 
 const updateDrug = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { name, type, usage, dosage, imageUrl } = req.body;
-    const drug = { name, type, usage, dosage, imageUrl };
+    const id = parseInt(req.params.id);
+    const imageUrl = req.file.buffer;
+    const { name, type, usage, dosage } = req.body;
+    const quantity = parseInt(req.body.quantity);
+    const unitPrice = parseInt(req.body.unitPrice);
+    const drug = { name, type, usage, dosage };
     try {
       await drugSchema.validateAsync(drug);
     } catch (err) {
       return errorResponse(res, 400, 1, "Validate error");
     }
-    const result = await drugServices.update(id, drug);
-    if (result === 0) {
-      return errorResponse(res, 404, 1, `Cannot find drug has id = ${id}`);
-    } else return successResponse(res, 200, -1, result);
+    const upload = await cloudinary.uploader
+      .upload_stream(
+        {
+          resource_type: "raw",
+          width: 200, // Chiều rộng sau khi tải lên
+          height: 200, // Chiều cao sau khi tải lên
+          crop: "fill", // Cắt và điều chỉnh để đảm bảo kích thước
+          quality: "auto:good", // Chất lượng ảnh
+          format: "jpg", // Định dạng ảnh
+        },
+        async (error, result) => {
+          if (error) {
+            console.error("Error uploading to Cloudinary:", error);
+            res.status(500).json({
+              success: false,
+              err: 1,
+              message: "Loi khi upload anh len cloudinary!",
+            });
+          } else {
+            // Luu thong tin nguoi dung vao co so du lieu
+            const newInfo = {
+              ...drug,
+              imageUrl: result.secure_url,
+            };
+            const modelResult = await drugServices.update(id, newInfo);
+            if (result) {
+              // update to drug_warehouse info
+              const drugWarehouseRecord = {
+                quantity,
+                unitPrice,
+              };
+              const result = await drugWarehouseServices.update(
+                id,
+                drugWarehouseRecord
+              );
+              if (result) {
+                // Thanh cong
+                // Lay du lieu de tra ve cho nguoi dung
+                const drugData = await drugServices.findById(id);
+                return successResponse(res, 200, -1, drugData);
+              } else {
+                return errorResponse(
+                  res,
+                  500,
+                  1,
+                  "Server has error. Cannot update drug."
+                );
+              }
+            }
+          }
+        }
+      )
+      .end(imageUrl);
   } catch (error) {
     return errorResponse(res, 500, 1, "Internal server errors");
   }
