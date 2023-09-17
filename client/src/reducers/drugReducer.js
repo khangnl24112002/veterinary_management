@@ -1,4 +1,5 @@
 import {
+  ADD_NEW_DRUG,
   FETCH_ALL_DRUGS,
   FETCH_ALL_DRUG_CATEGORIES,
 } from "../actions/actionTypes";
@@ -21,6 +22,13 @@ const drugReducer = (state = initialState, action) => {
         ...state,
         categories: action.payload,
       };
+    case ADD_NEW_DRUG: {
+      return {
+        ...state,
+        drug: [...state.drug, action.payload],
+      };
+    }
+
     default:
       return state;
   }

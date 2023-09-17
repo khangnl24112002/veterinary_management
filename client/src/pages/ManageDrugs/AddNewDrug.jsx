@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { addNewDrugs } from "../../services/drug.services";
+import { useDispatch } from "react-redux";
+import { addNewDrug } from "../../actions/drugActions/drugActions";
 
 const AddNewDrug = () => {
   const {
@@ -9,6 +11,7 @@ const AddNewDrug = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const onSubmit = async (drug) => {
     // Xử lí dữ liệu trước khi submit
@@ -26,7 +29,14 @@ const AddNewDrug = () => {
     drug.imageUrl = drug.imageUrl[0];
     // gọi API
     const result = await addNewDrugs(drug);
-    setError(result.message);
+    if (result.success) {
+      setError("Thêm thuốc mới thành công");
+      dispatch(addNewDrug(result.data));
+    } else {
+      setError(
+        "Máy chủ bị lỗi không thể tạo được thuốc mới. Vui lòng thử lại sau."
+      );
+    }
   };
   return (
     <div className="container mx-auto px-6 py-2">
@@ -115,10 +125,10 @@ const AddNewDrug = () => {
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4 mt-4"
           >
-            Create Account
+            Tạo thuốc
           </button>
           <Link to="../" className="text-blue-500 hover:underline">
-            Back
+            Quay lại
           </Link>
         </div>
       </form>

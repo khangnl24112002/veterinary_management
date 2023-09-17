@@ -19,3 +19,5 @@ export const FETCH_ALL_DRUG_CATEGORIES = "FETCH_ALL_DRUG_CATEGORIES";
 export const UPDATE_DRUG = "UPDATE_DRUG";
 
 export const DELETE_DRUG = "DELETE_DRUG";
+
+export const ADD_NEW_DRUG = "ADD_NEW_DRUG";

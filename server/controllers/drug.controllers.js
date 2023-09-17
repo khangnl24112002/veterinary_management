@@ -68,7 +68,7 @@ const addNewDrug = async (req, res, next) => {
               imageUrl: result.secure_url,
             };
             const modelResult = await drugServices.insert(newInfo);
-            return successResponse(res, 201, -1, newInfo);
+            return successResponse(res, 201, -1, modelResult);
           }
         }
       )

@@ -15,6 +15,7 @@ const ViewDrugs = () => {
     const fetchData = async () => {
       try {
         const drug = await getAllDrugs();
+
         const categories = await getAllCategories();
         // fetch thanh cong: dispatch du lieu len reducer
         // xu ly du lieu categories
@@ -33,7 +34,7 @@ const ViewDrugs = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   const drugList = useSelector((state) => state.drug.drug);
   return (
