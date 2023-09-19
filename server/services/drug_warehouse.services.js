@@ -16,7 +16,6 @@ const update = async (id, drugRecord) => {
       drugId: id,
     },
   });
-  console.log(oldRecord);
   if (!oldRecord) return 0;
   await db.Drug_Warehouse.update(
     {
@@ -28,6 +27,14 @@ const update = async (id, drugRecord) => {
   return 1;
 };
 
+const findByDrugId = async (drugId) => {
+  const result = await db.Drug_Warehouse.findOne({
+    where: {
+      drugId,
+    },
+  });
+  return result;
+};
 const delDrugRecord = async (id) => {
   const result = await db.Drug_Warehouse.destroy({
     where: {
@@ -42,4 +49,5 @@ module.exports = {
   insert,
   update,
   delDrugRecord,
+  findByDrugId,
 };

@@ -43,8 +43,8 @@ const ViewDrugDetail = () => {
     } else if (drugItem.type == 4) {
       drugItem.type = "Thuốc nhỏ mắt, mũi";
     }
-    drugItem["quantity"] = drugItem.Drug_Warehouse.quantity;
-    drugItem["unitPrice"] = drugItem.Drug_Warehouse.unitPrice;
+    drugItem.quantity = drugItem.Drug_Warehouse.quantity;
+    drugItem.unitPrice = drugItem.Drug_Warehouse.unitPrice;
     // Gan gia tri vao state
     setDrug(drugItem);
     reset({ ...drug });

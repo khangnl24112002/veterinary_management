@@ -17,6 +17,7 @@ const accountReducer = (state = initialState, action) => {
       const newAccountList = state.accounts.filter(
         (account) => account.id !== action.payload
       );
+      console.log(newAccountList);
       return {
         ...state,
         accounts: newAccountList,

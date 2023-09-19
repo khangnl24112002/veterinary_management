@@ -7,6 +7,7 @@ import {
 } from "../../actions/drugActions/drugActions";
 import Card from "../../components/Card/Card";
 import { Link } from "react-router-dom";
+
 const ViewDrugs = () => {
   // dung dispatch de dua du lieu len reducer
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const ViewDrugs = () => {
   }, [dispatch]);
 
   const drugList = useSelector((state) => state.drug.drug);
+
   return (
     <div>
       <Link

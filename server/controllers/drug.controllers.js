@@ -170,11 +170,15 @@ const updateDrug = async (req, res, next) => {
 const deleteDrug = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await drugServices.delDrug(id);
-    if (result === 1) {
-      return successResponse(res, 200, -1, "Delete successfully");
-    } else {
-      return errorResponse(res, 404, 1, `Not found drug has id = ${id}`);
+    const drugWarehouseId = await drugWarehouseServices.findByDrugId(id);
+    const result = drugWarehouseServices.delDrugRecord(drugWarehouseId.id);
+    if (result) {
+      const newResult = await drugServices.delDrug(id);
+      if (newResult === 1) {
+        return successResponse(res, 200, -1, "Delete successfully");
+      } else {
+        return errorResponse(res, 404, 1, `Not found drug has id = ${id}`);
+      }
     }
   } catch (error) {
     return errorResponse(res, 500, 1, "Internal server errors");

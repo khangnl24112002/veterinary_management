@@ -1,5 +1,6 @@
 import {
   ADD_NEW_DRUG,
+  DELETE_DRUG,
   FETCH_ALL_DRUGS,
   FETCH_ALL_DRUG_CATEGORIES,
   UPDATE_DRUG,
@@ -37,6 +38,13 @@ const drugReducer = (state = initialState, action) => {
       return state;
     }
 
+    case DELETE_DRUG: {
+      const newState = state.drug.filter((drug) => drug.id !== action.payload);
+      return {
+        ...state,
+        drug: newState,
+      };
+    }
     default:
       return state;
   }

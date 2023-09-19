@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
+import { deleteDrugAction } from "../../actions/drugActions/drugActions";
+import { deleteDrug as deleteDrugService } from "../../services/drug.services";
+import { useDispatch } from "react-redux";
 
 /* eslint-disable react/prop-types */
 const Card = ({ drug }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = async (drugId) => {
+    const response = await deleteDrugService(drugId);
+    if (response.success) {
+      dispatch(deleteDrugAction(drugId));
+    }
+  };
   let type;
   if (drug.type == "1") {
     type = "Thuốc tiêm";
@@ -54,7 +65,7 @@ const Card = ({ drug }) => {
             <Link to={`${drug.id}`}>View detail</Link>
           </button>
           <button
-            value="button"
+            onClick={() => handleDelete(drug.id)}
             className="shrink basis-1/2 my-4 px-4 py-2 text-white hover:bg-blue-700 bg-blue-500 rounded-lg"
           >
             Delete
