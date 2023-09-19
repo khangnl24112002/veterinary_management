@@ -2,6 +2,7 @@ import {
   ADD_NEW_DRUG,
   FETCH_ALL_DRUGS,
   FETCH_ALL_DRUG_CATEGORIES,
+  UPDATE_DRUG,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -27,6 +28,13 @@ const drugReducer = (state = initialState, action) => {
         ...state,
         drug: [...state.drug, action.payload],
       };
+    }
+    case UPDATE_DRUG: {
+      const index = state.drug.findIndex(
+        (drug) => drug.id === action.payload.id
+      );
+      state.drug[index] = action.payload;
+      return state;
     }
 
     default:
