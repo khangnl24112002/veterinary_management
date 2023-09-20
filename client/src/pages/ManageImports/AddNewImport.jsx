@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { getAllDrugs } from "../../services/drug.services";
+import Select from "react-select";
+import { Link } from "react-router-dom";
 
 const AddNewImport = () => {
   const { control, handleSubmit, reset } = useForm();
@@ -91,6 +93,12 @@ const AddNewImport = () => {
           >
             Submit
           </button>
+          <button
+            type="submit"
+            className="bg-green-500 text-white p-2 rounded-md ml-4"
+          >
+            <Link to="../">Quay lai</Link>
+          </button>
         </form>
       </div>
 
@@ -101,10 +109,10 @@ const AddNewImport = () => {
             <thead>
               <tr>
                 <th>Order</th>
+                <th>Drug</th>
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Price</th>
-                <th>Drug</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -112,20 +120,38 @@ const AddNewImport = () => {
               {fields.map((field, index) => (
                 <tr key={field.id}>
                   <td>{index + 1}</td>
-                  <td>
+                  <td className="w-60">
                     <Controller
                       control={control}
                       name={`importDetails[${index}].drug`}
                       render={({ field }) => (
-                        <select className="w-full bg-gray-100 p-2" {...field}>
-                          <option value="">Select a drug</option>
-                          {drugs.map((drug, index) => (
-                            <option key={index} value={drug.id}>
-                              {drug.name}
-                            </option>
-                          ))}
-                          {/* Add options for drugs here */}
-                        </select>
+                        // <select className="w-full bg-gray-100 p-2" {...field}>
+                        //   <option value="">Select a drug</option>
+                        //   {drugs.map((drug, index) => (
+                        //     <option key={index} value={drug.id}>
+                        //       {drug.name}
+                        //     </option>
+                        //   ))}
+                        //   {/* Add options for drugs here */}
+                        // </select>
+                        <div>
+                          <Controller
+                            {...field}
+                            control={control}
+                            name={`importDetails[${index}].drug`}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={drugs.map((drug) => ({
+                                  value: drug.id,
+                                  label: drug.name,
+                                }))}
+                                isSearchable={true}
+                                isClearable={true}
+                              />
+                            )}
+                          />
+                        </div>
                       )}
                     />
                   </td>
