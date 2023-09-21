@@ -3,9 +3,12 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { getAllDrugs } from "../../services/drug.services";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import { addNewImport } from "../../services/import.services";
 
 const AddNewImport = () => {
   const { control, handleSubmit, reset } = useForm();
+
+  const [error, setIsError] = useState("");
 
   // Sử dụng useFieldArray để quản lý mảng động các trường dữ liệu trong form
   const { fields, append, remove } = useFieldArray({
@@ -26,7 +29,7 @@ const AddNewImport = () => {
   }, [fields]);
 
   // Khi submit form
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Lây ngày hiện tại thêm vào dữ liệu của form (data)
     const currentDate = new Date().toLocaleDateString("en-GB");
     data.date = currentDate;
@@ -35,7 +38,15 @@ const AddNewImport = () => {
     data.totalPrice = totalPrice;
 
     console.log(data);
-    reset();
+
+    // call API to get value
+    const response = await addNewImport(data);
+    if (response.success) {
+      reset();
+      setIsError("Submit successfully");
+    } else {
+      setIsError("Error: cannot submit your import");
+    }
   };
 
   const [drugs, setDrugs] = useState();
@@ -99,6 +110,7 @@ const AddNewImport = () => {
           >
             <Link to="../">Quay lai</Link>
           </button>
+          <p>{error}</p>
         </form>
       </div>
 
@@ -134,24 +146,16 @@ const AddNewImport = () => {
                         //   ))}
                         //   {/* Add options for drugs here */}
                         // </select>
-                        <div>
-                          <Controller
-                            {...field}
-                            control={control}
-                            name={`importDetails[${index}].drug`}
-                            render={({ field }) => (
-                              <Select
-                                {...field}
-                                options={drugs.map((drug) => ({
-                                  value: drug.id,
-                                  label: drug.name,
-                                }))}
-                                isSearchable={true}
-                                isClearable={true}
-                              />
-                            )}
-                          />
-                        </div>
+
+                        <Select
+                          {...field}
+                          options={drugs.map((drug) => ({
+                            value: drug.id,
+                            label: drug.name,
+                          }))}
+                          isSearchable={true}
+                          isClearable={true}
+                        />
                       )}
                     />
                   </td>
