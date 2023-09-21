@@ -31,7 +31,7 @@ const AddNewImport = () => {
   // Khi submit form
   const onSubmit = async (data) => {
     // Lây ngày hiện tại thêm vào dữ liệu của form (data)
-    const currentDate = new Date().toLocaleDateString("en-GB");
+    const currentDate = new Date();
     data.date = currentDate;
 
     // Gán giá trị totalPrice đã tính toán để submit
