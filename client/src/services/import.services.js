@@ -24,11 +24,7 @@ export const getImportDetail = async (id) => {
 
 export const addNewImport = async (importReport) => {
   return await axiosInstance
-    .post(`/imports`, importReport, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .post(`/imports`, importReport)
     .then((response) => {
       return response.data;
     })
