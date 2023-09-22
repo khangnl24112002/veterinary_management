@@ -43,6 +43,7 @@ const AddNewImport = () => {
     const response = await addNewImport(data);
     if (response.success) {
       reset();
+      setTotalPrice(0);
       setIsError("Submit successfully");
     } else {
       setIsError("Error: cannot submit your import");
@@ -85,6 +86,7 @@ const AddNewImport = () => {
           <Controller
             control={control}
             name="seller"
+            defaultValue=""
             render={({ field }) => (
               <input className="w-full bg-gray-100 p-2 mb-4" {...field} />
             )}
