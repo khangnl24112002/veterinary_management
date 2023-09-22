@@ -6,11 +6,27 @@ const {
 } = require("../middlewares/handleError");
 
 const getImportReports = async (req, res, next) => {
-  return 1;
+  try {
+    const importReports = await importReportServices.getAll();
+    return successResponse(res, 200, -1, importReports);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server error!");
+  }
 };
 
 const getImportReportDetail = async (req, res, next) => {
-  return 1;
+  try {
+    const importReport = await importReportServices.findById(
+      parseInt(req.params.id)
+    );
+    if (importReport) {
+      return successResponse(res, 200, -1, importReport);
+    } else {
+      return errorResponse(res, 404, 1, "Cannot found report");
+    }
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server error");
+  }
 };
 
 const addNewImportReport = async (req, res, next) => {

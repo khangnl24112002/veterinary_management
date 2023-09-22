@@ -1,11 +1,15 @@
 import db, { Sequelize, sequelize } from "../models/index";
 
 const getAll = async () => {
-  return 1;
+  const importReports = await db.Drug_Import_Report.findAll();
+  return importReports;
 };
 
 const findById = async (id) => {
-  return 1;
+  const importReport = await db.Drug_Import_Report.findByPk(id, {
+    include: [db.Import_Report_Detail],
+  });
+  return importReport;
 };
 
 const insert = async (importReport) => {
