@@ -10,6 +10,16 @@ const getAll = async () => {
   }
 };
 
+const getAllUsername = async () => {
+  const acc = await db.Account.findAll({
+    attributes: ["username"],
+    where: {
+      role: 2,
+    },
+  });
+  return acc;
+};
+
 const findById = async (accountId) => {
   try {
     const acc = await db.Account.findByPk(accountId);
@@ -88,6 +98,7 @@ const updateAccount = async (id, password) => {
 module.exports = {
   getAll,
   findById,
+  getAllUsername,
   createAccount,
   findByUsername,
   deleteAccount,

@@ -1,13 +1,15 @@
 import db from "../models/index";
 
 const getAll = async () => {
-  try {
-    const customer = await db.Customer.findAll();
-    return customer;
-  } catch (err) {
-    console.log(err);
-    return 0;
-  }
+  const customer = await db.Customer.findAll();
+  return customer;
+};
+
+const getAllName = async () => {
+  const customer = await db.Customer.findAll({
+    attributes: ["name"],
+  });
+  return customer;
 };
 
 const getByAccountId = async (id) => {
@@ -87,6 +89,7 @@ module.exports = {
   getAll,
   insert,
   getById,
+  getAllName,
   getByAccountId,
   deleteCustomer,
   update,

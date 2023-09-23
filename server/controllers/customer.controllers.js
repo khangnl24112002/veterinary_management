@@ -6,6 +6,7 @@ const {
 
 const customerServices = require("../services/customer.services");
 import cloudinary from "../upload/cloudinary_config";
+import { successResponse, errorResponse } from "../middlewares/handleError";
 
 const getCustomerInfo = async (req, res, next) => {
   try {
@@ -95,17 +96,19 @@ const addNewCustomer = async (req, res, next) => {
 
 const getCustomers = async (req, res, next) => {
   try {
-    res.status(200).json({
-      success: true,
-      err: -1,
-      message: "get customers",
-    });
+    const getCustomersResult = await customerServices.getAll();
+    return successResponse(res, 200, -1, getCustomersResult);
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      err: 1,
-      message: "Internal server error",
-    });
+    return errorResponse(res, 500, 1, "Internal server error");
+  }
+};
+
+const getCustomersName = async (req, res, next) => {
+  try {
+    const getCustomersResult = await customerServices.getAllName();
+    return successResponse(res, 200, -1, getCustomersResult);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server error");
   }
 };
 
@@ -172,5 +175,6 @@ module.exports = {
   getCustomerInfo,
   addNewCustomer,
   getCustomers,
+  getCustomersName,
   updateCustomerInfo,
 };

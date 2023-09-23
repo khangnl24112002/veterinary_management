@@ -33,6 +33,15 @@ const getAccounts = async (req, res, next) => {
   }
 };
 
+const getCustomerAccounts = async (req, res, next) => {
+  try {
+    const customerUsernames = await accountServices.getAllUsername();
+    return successResponse(res, 200, -1, customerUsernames);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server error");
+  }
+};
+
 const getAccountById = async (req, res, next) => {
   try {
     const accountId = req.params.id;
@@ -363,6 +372,7 @@ const updateAccount = async (req, res, next) => {
 
 module.exports = {
   getAccounts,
+  getCustomerAccounts,
   getAccountById,
   register,
   login,
