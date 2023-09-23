@@ -16,12 +16,11 @@ const ViewImports = () => {
         });
         setData(responseData);
       } else {
-        return <p>Cannot get data!</p>;
+        return <p>Lấy dữ liệu thất bại</p>;
       }
     };
     fetchAllData();
   }, []);
-  console.log(data);
   return (
     <div>
       {data ? (
@@ -37,7 +36,7 @@ const ViewImports = () => {
           <ImportTable data={data} />
         </div>
       ) : (
-        <div></div>
+        <div>Không thể lấy được dữ liệu.</div>
       )}
     </div>
   );
