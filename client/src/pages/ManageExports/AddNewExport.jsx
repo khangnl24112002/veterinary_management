@@ -3,9 +3,8 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { getAllDrugs } from "../../services/drug.services";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import { addNewImport } from "../../services/import.services";
 
-const AddNewImport = () => {
+const AddNewExport = () => {
   const { control, handleSubmit, reset } = useForm();
 
   const [error, setIsError] = useState("");
@@ -40,14 +39,14 @@ const AddNewImport = () => {
     console.log(data);
 
     // call API to get value
-    const response = await addNewImport(data);
-    if (response.success) {
-      reset();
-      setTotalPrice(0);
-      setIsError("Submit successfully");
-    } else {
-      setIsError("Error: cannot submit your import");
-    }
+    // const response = await addNewImport(data);
+    // if (response.success) {
+    //   reset();
+    //   setTotalPrice(0);
+    //   setIsError("Submit successfully");
+    // } else {
+    //   setIsError("Error: cannot submit your import");
+    // }
   };
 
   const [drugs, setDrugs] = useState();
@@ -81,11 +80,22 @@ const AddNewImport = () => {
             disabled
           />
 
-          {/**Handle seller */}
-          <label className="block mb-2 font-bold">Seller</label>
+          {/**Handle customer Name */}
+          <label className="block mb-2 font-bold">Customer Name</label>
           <Controller
             control={control}
-            name="seller"
+            name="customerName"
+            defaultValue=""
+            render={({ field }) => (
+              <input className="w-full bg-gray-100 p-2 mb-4" {...field} />
+            )}
+          />
+
+          {/**Handle customer Address */}
+          <label className="block mb-2 font-bold">Customer Address</label>
+          <Controller
+            control={control}
+            name="customerAddress"
             defaultValue=""
             render={({ field }) => (
               <input className="w-full bg-gray-100 p-2 mb-4" {...field} />
@@ -137,7 +147,7 @@ const AddNewImport = () => {
                   <td className="w-60">
                     <Controller
                       control={control}
-                      name={`importDetails[${index}].drug`}
+                      name={`exportDetails[${index}].drug`}
                       render={({ field }) => (
                         // <select className="w-full bg-gray-100 p-2" {...field}>
                         //   <option value="">Select a drug</option>
@@ -164,7 +174,7 @@ const AddNewImport = () => {
                   <td>
                     <Controller
                       control={control}
-                      name={`importDetails[${index}].quantity`}
+                      name={`exportDetails[${index}].quantity`}
                       render={({ field }) => (
                         <input
                           className="w-full bg-gray-100 p-2"
@@ -177,7 +187,7 @@ const AddNewImport = () => {
                   <td>
                     <Controller
                       control={control}
-                      name={`importDetails[${index}].unitPrice`}
+                      name={`exportDetails[${index}].unitPrice`}
                       render={({ field }) => (
                         <input
                           className="w-full bg-gray-100 p-2"
@@ -221,4 +231,4 @@ const AddNewImport = () => {
   );
 };
 
-export default AddNewImport;
+export default AddNewExport;

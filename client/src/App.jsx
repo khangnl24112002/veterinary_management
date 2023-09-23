@@ -20,6 +20,9 @@ import AddNewDrug from "./pages/ManageDrugs/AddNewDrug";
 import ViewImports from "./pages/ManageImports/ViewImports.jsx";
 import ViewImportDetail from "./pages/ManageImports/ViewImportDetail";
 import AddNewImport from "./pages/ManageImports/AddNewImport";
+import ViewExports from "./pages/ManageExports/ViewExports.jsx";
+import ViewExportDetail from "./pages/ManageExports/ViewExportDetail";
+import AddNewExport from "./pages/ManageExports/AddNewExport";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -44,7 +47,11 @@ const App = () => {
             <Route path=":id" element={<ViewImportDetail />} />
             <Route path="addNewImport" element={<AddNewImport />} />
           </Route>
-          <Route path="manage_exports" element={<ManageExports />} />
+          <Route path="manage_exports" element={<ManageExports />}>
+            <Route path="" element={<ViewExports />} />
+            <Route path=":id" element={<ViewExportDetail />} />
+            <Route path="addNewExport" element={<AddNewExport />} />
+          </Route>
           <Route path="manage_schedules" element={<ManageSchedules />} />
           <Route path="manage_accounts" element={<ManageAccounts />}>
             <Route path="" element={<ViewAccounts />} />
