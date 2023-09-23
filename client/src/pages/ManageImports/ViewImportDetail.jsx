@@ -17,6 +17,7 @@ const ViewImportDetail = () => {
     };
     fetchData();
   }, []);
+  console.log(importDetail);
   return (
     <>
       {importDetail ? (
@@ -71,7 +72,6 @@ const ViewImportDetail = () => {
                     <th>Quantity</th>
                     <th>Unit Price</th>
                     <th>Price</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,7 @@ const ViewImportDetail = () => {
                           className="w-full bg-gray-100 p-2"
                           type="text"
                           disabled
-                          value={record.drugId}
+                          value={record.Drug.name}
                         />
                       </td>
                       <td>
@@ -110,22 +110,19 @@ const ViewImportDetail = () => {
                           value={record.unitPrice * record.quantity}
                         />
                       </td>
-                      <td>
-                        <button
-                          type="button"
-                          className="text-red-500 p-2"
-                          onClick={() => {
-                            console.log("View detail of drug");
-                          }}
-                        >
-                          View drug
-                        </button>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="bg-blue-500 text-white p-2 rounded-md mr-2"
+            >
+              <Link to="../">Back</Link>
+            </button>
           </div>
         </div>
       ) : (

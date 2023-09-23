@@ -7,7 +7,16 @@ const getAll = async () => {
 
 const findById = async (id) => {
   const importReport = await db.Drug_Import_Report.findByPk(id, {
-    include: [db.Import_Report_Detail],
+    include: [
+      {
+        model: db.Import_Report_Detail,
+        include: [
+          {
+            model: db.Drug,
+          },
+        ],
+      },
+    ],
   });
   return importReport;
 };
