@@ -88,7 +88,20 @@ const addNewImportReport = async (req, res, next) => {
 };
 
 const deleteImportReport = async (req, res, next) => {
-  return 1;
+  // delete all records
+  const deleteRecordResult =
+    await importReportDetailServices.delRecordByImportId(
+      parseInt(req.params.id)
+    );
+  if (deleteRecordResult) {
+    const deleteImportResult = await importReportServices.delImportReport(
+      parseInt(req.params.id)
+    );
+    if (deleteImportResult) {
+      return successResponse(res, 200, -1, "Delete successfully");
+    }
+  }
+  return errorResponse(res, 500, 1, "Server error, cannot delete!");
 };
 
 module.exports = {

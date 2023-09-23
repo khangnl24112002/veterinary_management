@@ -27,7 +27,12 @@ const insert = async (importReport) => {
 };
 
 const delImportReport = async (id) => {
-  return 1;
+  const result = await db.Drug_Import_Report.destroy({
+    where: {
+      id,
+    },
+  });
+  return result;
 };
 
 module.exports = {

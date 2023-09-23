@@ -13,13 +13,18 @@ const insert = async (record) => {
   return result;
 };
 
-const delRecord = async (id) => {
-  return 1;
+const delRecordByImportId = async (id) => {
+  const result = await db.Import_Report_Detail.destroy({
+    where: {
+      drugImportReportId: id,
+    },
+  });
+  return result;
 };
 
 module.exports = {
   getAll,
   findById,
   insert,
-  delRecord,
+  delRecordByImportId,
 };

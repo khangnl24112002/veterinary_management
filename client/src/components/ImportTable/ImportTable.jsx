@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
-const ImportTable = ({ data }) => {
+const ImportTable = ({ data, handleDelete }) => {
   return (
     <div className="overflow-x-auto overflow-y-auto mt-12">
       <table className="min-w-full">
@@ -50,7 +50,7 @@ const ImportTable = ({ data }) => {
               <td className="pr-6 pl-12 py-4 whitespace-nowrap">
                 <button
                   onClick={() => {
-                    console.log("delete row");
+                    handleDelete(item.id);
                   }}
                 >
                   <svg

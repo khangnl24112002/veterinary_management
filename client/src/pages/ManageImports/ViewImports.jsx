@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ImportTable from "../../components/ImportTable/ImportTable";
 import { useEffect, useState } from "react";
-import { getAllImports } from "../../services/import.services";
+import { deleteImport, getAllImports } from "../../services/import.services";
 
 const ViewImports = () => {
   const [data, setData] = useState();
@@ -21,6 +21,11 @@ const ViewImports = () => {
     };
     fetchAllData();
   }, []);
+  const handleDelete = async (id) => {
+    await deleteImport(id);
+    const newData = data.filter((record) => record.id !== id);
+    setData(newData);
+  };
   return (
     <div>
       {data ? (
@@ -33,7 +38,7 @@ const ViewImports = () => {
               Add new Import
             </Link>
           </button>
-          <ImportTable data={data} />
+          <ImportTable data={data} handleDelete={handleDelete} />
         </div>
       ) : (
         <div>Không thể lấy được dữ liệu.</div>

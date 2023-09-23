@@ -117,12 +117,12 @@ const ViewImportDetail = () => {
             </div>
           </div>
           <div>
-            <button
-              type="button"
+            <Link
               className="bg-blue-500 text-white p-2 rounded-md mr-2"
+              to="../"
             >
-              <Link to="../">Back</Link>
-            </button>
+              Back
+            </Link>
           </div>
         </div>
       ) : (
