@@ -14,10 +14,10 @@ const insert = async (record) => {
 };
 
 // Fix it
-const delRecordByImportId = async (id) => {
+const delRecordByExportId = async (id) => {
   const result = await db.Prescription_Detail.destroy({
     where: {
-      drugImportReportId: id,
+      prescriptionId: id,
     },
   });
   return result;
@@ -27,5 +27,5 @@ module.exports = {
   getAll,
   findById,
   insert,
-  delRecordByImportId,
+  delRecordByExportId,
 };

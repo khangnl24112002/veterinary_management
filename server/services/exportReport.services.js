@@ -10,7 +10,7 @@ const findById = async (id) => {
   const importReport = await db.Prescription.findByPk(id, {
     include: [
       {
-        model: db.Import_Report_Detail,
+        model: db.Prescription_Detail,
         include: [
           {
             model: db.Drug,
@@ -27,7 +27,7 @@ const insert = async (exportReport) => {
   return result;
 };
 
-const delImportReport = async (id) => {
+const delExportReport = async (id) => {
   const result = await db.Prescription.destroy({
     where: {
       id,
@@ -40,5 +40,5 @@ module.exports = {
   getAll,
   findById,
   insert,
-  delImportReport,
+  delExportReport,
 };
