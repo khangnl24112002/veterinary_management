@@ -24,6 +24,9 @@ import ViewExports from "./pages/ManageExports/ViewExports.jsx";
 import ViewExportDetail from "./pages/ManageExports/ViewExportDetail";
 import AddNewExport from "./pages/ManageExports/AddNewExport";
 import Unauthorized from "./pages/ErrorPage/Unauthorized";
+import ViewSchedules from "./pages/ManageSchedules/ViewSchedules";
+import AddNewSchedule from "./pages/ManageSchedules/AddNewSchedule";
+import ViewScheduleDetail from "./pages/ManageSchedules/ViewScheduleDetail";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -53,7 +56,11 @@ const App = () => {
             <Route path=":id" element={<ViewExportDetail />} />
             <Route path="addNewExport" element={<AddNewExport />} />
           </Route>
-          <Route path="manage_schedules" element={<ManageSchedules />} />
+          <Route path="manage_schedules" element={<ManageSchedules />}>
+            <Route path="" element={<ViewSchedules />} />
+            <Route path="addNewSchedule" element={<AddNewSchedule />} />
+            <Route path=":id" element={<ViewScheduleDetail />} />
+          </Route>
           <Route path="manage_accounts" element={<ManageAccounts />}>
             <Route path="" element={<ViewAccounts />} />
             <Route path="addNewAccount" element={<AddNewAccount />} />
