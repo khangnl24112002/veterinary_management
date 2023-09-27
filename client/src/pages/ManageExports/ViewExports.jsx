@@ -32,7 +32,7 @@ const ViewExports = () => {
         <div>
           <button className="my-4">
             <Link
-              to="addNewImport"
+              to="addNewExport"
               className="my-4 px-4 py-2 text-white hover:bg-blue-700 bg-blue-500 rounded-lg"
             >
               Add new Export

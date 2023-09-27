@@ -46,7 +46,7 @@ const AddNewExport = () => {
       setTotalPrice(0);
       setIsError("Submit successfully");
     } else {
-      setIsError("Error: cannot submit your import");
+      setIsError("Error: cannot submit your export");
     }
   };
 
