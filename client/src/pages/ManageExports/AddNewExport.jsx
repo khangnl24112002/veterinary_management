@@ -3,6 +3,7 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { getAllDrugs } from "../../services/drug.services";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import { addNewExport } from "../../services/export.services";
 
 const AddNewExport = () => {
   const { control, handleSubmit, reset } = useForm();
@@ -12,7 +13,7 @@ const AddNewExport = () => {
   // Sử dụng useFieldArray để quản lý mảng động các trường dữ liệu trong form
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "importDetails",
+    name: "exportDetails",
   });
 
   // Tạo state để lưu tổng giá trị
@@ -39,14 +40,14 @@ const AddNewExport = () => {
     console.log(data);
 
     // call API to get value
-    // const response = await addNewImport(data);
-    // if (response.success) {
-    //   reset();
-    //   setTotalPrice(0);
-    //   setIsError("Submit successfully");
-    // } else {
-    //   setIsError("Error: cannot submit your import");
-    // }
+    const response = await addNewExport(data);
+    if (response.success) {
+      reset();
+      setTotalPrice(0);
+      setIsError("Submit successfully");
+    } else {
+      setIsError("Error: cannot submit your import");
+    }
   };
 
   const [drugs, setDrugs] = useState();
@@ -80,7 +81,6 @@ const AddNewExport = () => {
             disabled
           />
 
-          {/**Handle customer Name */}
           <label className="block mb-2 font-bold">Customer Name</label>
           <Controller
             control={control}
@@ -91,11 +91,20 @@ const AddNewExport = () => {
             )}
           />
 
-          {/**Handle customer Address */}
           <label className="block mb-2 font-bold">Customer Address</label>
           <Controller
             control={control}
             name="customerAddress"
+            defaultValue=""
+            render={({ field }) => (
+              <input className="w-full bg-gray-100 p-2 mb-4" {...field} />
+            )}
+          />
+
+          <label className="block mb-2 font-bold">Customer Phone Number</label>
+          <Controller
+            control={control}
+            name="customerPhoneNumber"
             defaultValue=""
             render={({ field }) => (
               <input className="w-full bg-gray-100 p-2 mb-4" {...field} />
@@ -116,12 +125,12 @@ const AddNewExport = () => {
           >
             Submit
           </button>
-          <button
-            type="submit"
+          <Link
             className="bg-green-500 text-white p-2 rounded-md ml-4"
+            to="../"
           >
-            <Link to="../">Quay lai</Link>
-          </button>
+            Quay lai
+          </Link>
           <p>{error}</p>
         </form>
       </div>
@@ -149,16 +158,6 @@ const AddNewExport = () => {
                       control={control}
                       name={`exportDetails[${index}].drug`}
                       render={({ field }) => (
-                        // <select className="w-full bg-gray-100 p-2" {...field}>
-                        //   <option value="">Select a drug</option>
-                        //   {drugs.map((drug, index) => (
-                        //     <option key={index} value={drug.id}>
-                        //       {drug.name}
-                        //     </option>
-                        //   ))}
-                        //   {/* Add options for drugs here */}
-                        // </select>
-
                         <Select
                           {...field}
                           options={drugs.map((drug) => ({
