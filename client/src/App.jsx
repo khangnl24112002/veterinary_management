@@ -23,6 +23,7 @@ import AddNewImport from "./pages/ManageImports/AddNewImport";
 import ViewExports from "./pages/ManageExports/ViewExports.jsx";
 import ViewExportDetail from "./pages/ManageExports/ViewExportDetail";
 import AddNewExport from "./pages/ManageExports/AddNewExport";
+import Unauthorized from "./pages/ErrorPage/Unauthorized";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -59,6 +60,7 @@ const App = () => {
             <Route path=":id" element={<ViewAccountDetail />} />
           </Route>
         </Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

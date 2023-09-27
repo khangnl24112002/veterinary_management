@@ -25,7 +25,6 @@ const isAuthenticated = (req, res, next) => {
     return res
       .status(401)
       .json({ success: false, err: -2, message: error.message });
-    // console.error(error);
   }
 };
 

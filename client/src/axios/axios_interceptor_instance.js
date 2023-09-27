@@ -48,10 +48,12 @@ instance.interceptors.response.use(
 
     if (err.response) {
       // Access Token was expired
+      // Token het han khong the vao duoc (401: dang nhap that bai do ko co token hoac token khong dung)
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
 
         try {
+          // Goi refresh-token
           const rs = await refreshToken();
           const { accessToken } = rs.data;
           localStorage.setItem("accessToken", JSON.stringify(accessToken));
@@ -66,14 +68,19 @@ instance.interceptors.response.use(
           return Promise.reject(_error);
         }
       }
-
-      if (err.response.status === 403 && err.response.data) {
+      // 403:
+      if (err.response.status === 403 && err.response.data.err == 1) {
         // Dang xuat nguoi dung o day
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("account");
         // Điều hướng người dùng đến trang đăng nhập
-        window.location.replace("/");
+        console.log("refresh token has expired!");
+        // window.location.replace("/");
+        return Promise.reject(err.response.data);
+      }
+      if (err.response.status === 403 && err.response.data.err == 2) {
+        window.location.replace("/unauthorized");
         return Promise.reject(err.response.data);
       }
     }
