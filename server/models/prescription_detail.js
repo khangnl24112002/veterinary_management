@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Prescription_Detail.init(
     {
       quantity: DataTypes.INTEGER,
+      unitPrice: DataTypes.INTEGER,
       price: DataTypes.INTEGER,
       drugId: DataTypes.INTEGER,
       prescriptionId: DataTypes.INTEGER,

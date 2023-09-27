@@ -12,6 +12,9 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER,
       },
+      unitPrice: {
+        type: Sequelize.INTEGER,
+      },
       price: {
         type: Sequelize.INTEGER,
       },

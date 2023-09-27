@@ -23,6 +23,17 @@ const getByAccountId = async (id) => {
   }
 };
 
+const getByPhoneNumber = async (phoneNumber) => {
+  try {
+    const customer = await db.Customer.findOne({ where: { phoneNumber } });
+    if (customer === null) {
+      return null;
+    } else return customer;
+  } catch (err) {
+    return 0;
+  }
+};
+
 const getById = async (customerId) => {
   try {
     const customer = await db.Customer.findByPk(customerId);
@@ -93,4 +104,5 @@ module.exports = {
   getByAccountId,
   deleteCustomer,
   update,
+  getByPhoneNumber,
 };

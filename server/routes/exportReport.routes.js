@@ -6,7 +6,7 @@ const { isAuthenticated } = require("../middlewares/isAuthenticated");
 const router = require("express").Router();
 
 // Lay danh sach thong tin drug
-router.get("/", isAuthenticated, checkIsAdmin, exportReport.getexportReports);
+router.get("/", isAuthenticated, checkIsAdmin, exportReport.getExportReports);
 
 router.get(
   "/:id",
@@ -27,7 +27,7 @@ router.delete(
   "/:id",
   isAuthenticated,
   checkIsAdmin,
-  exportReport.deletEexportReport
+  exportReport.deleteExportReport
 );
 
 module.exports = router;
