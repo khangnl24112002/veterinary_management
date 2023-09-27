@@ -75,8 +75,7 @@ instance.interceptors.response.use(
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("account");
         // Điều hướng người dùng đến trang đăng nhập
-        console.log("refresh token has expired!");
-        // window.location.replace("/");
+        window.location.replace("/");
         return Promise.reject(err.response.data);
       }
       if (err.response.status === 403 && err.response.data.err == 2) {
