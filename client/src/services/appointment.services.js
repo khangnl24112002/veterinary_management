@@ -1,8 +1,8 @@
 import axiosInstance from "../axios/axios_interceptor_instance";
 
-export const getAllSchedules = async () => {
+export const getAllAppointments = async () => {
   return await axiosInstance
-    .get("/schedules")
+    .get("/appointments")
     .then((response) => {
       return response.data;
     })
@@ -11,9 +11,9 @@ export const getAllSchedules = async () => {
     });
 };
 
-export const getScheduleByCustomerId = async (customerId) => {
+export const getAppointmentByCustomerId = async (customerId) => {
   return await axiosInstance
-    .get(`/schedules/${customerId}`)
+    .get(`/appointments/${customerId}`)
     .then((response) => {
       return response.data;
     })
@@ -22,9 +22,9 @@ export const getScheduleByCustomerId = async (customerId) => {
     });
 };
 
-export const addNewSchedule = async (schedule) => {
+export const addNewAppointment = async (appointment) => {
   return await axiosInstance
-    .post(`/schedules`, schedule)
+    .post(`/appointments`, appointment)
     .then((response) => {
       return response.data;
     })
@@ -33,9 +33,9 @@ export const addNewSchedule = async (schedule) => {
     });
 };
 
-export const deleteSchedule = async (id) => {
+export const deleteAppointment = async (id) => {
   return await axiosInstance
-    .delete(`/schedules/${id}`)
+    .delete(`/appointments/${id}`)
     .then((response) => {
       return response.data;
     })

@@ -14,5 +14,5 @@ router.use("/customers", customerRouter);
 router.use("/drugs", drugRouter);
 router.use("/imports", importReportRouter);
 router.use("/exports", exportReportRouter);
-router.use("/schedules", scheduleRouter);
+router.use("/appointments", scheduleRouter);
 module.exports = router;

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addNewSchedule } from "../../services/schedule.services";
+import { addNewAppointment } from "../../services/appointment.services";
 
-const AddNewSchedule = () => {
+const AddNewAppointment = () => {
   const {
     register,
     handleSubmit,
@@ -14,14 +14,14 @@ const AddNewSchedule = () => {
   const customerId = useSelector((state) =>
     parseInt(state.user.accountInfo.id)
   );
-  const onSubmit = async (schedule) => {
+  const onSubmit = async (appointment) => {
     // gọi API
     // const result = await addNewDrugs(drug);
     // add some info
-    schedule.customerId = customerId;
-    schedule.isOk = false;
-    console.log(schedule);
-    const result = await addNewSchedule(schedule);
+    appointment.customerId = customerId;
+    appointment.isOk = false;
+    console.log(appointment);
+    const result = await addNewAppointment(appointment);
     if (result.success) {
       setError("Thêm yeu cau hen thành công");
     } else {
@@ -95,4 +95,4 @@ const AddNewSchedule = () => {
   );
 };
 
-export default AddNewSchedule;
+export default AddNewAppointment;

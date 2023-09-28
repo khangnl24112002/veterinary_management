@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
-const ExportTable = ({ data, handleDelete }) => {
+const AppointmentTable = ({ data, handleDelete }) => {
   return (
     <div className="overflow-x-auto overflow-y-auto mt-12">
       <table className="min-w-full">
@@ -77,4 +77,4 @@ const ExportTable = ({ data, handleDelete }) => {
   );
 };
 
-export default ExportTable;
+export default AppointmentTable;

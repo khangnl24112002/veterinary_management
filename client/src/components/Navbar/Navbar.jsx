@@ -131,7 +131,7 @@ const Navbar = () => {
             </svg>
             <p className="ml-3">MANAGE SCHEDULES</p>
           </Link>
-          <Link
+          {/* <Link
             className="flex justify-start items-center text-slate-300 hover:bg-blue-600 hover:text-white font-semibold text-lg p-5 text-left"
             to="manage_drugs"
           >
@@ -148,7 +148,7 @@ const Navbar = () => {
               />
             </svg>
             <p className="ml-3">MANAGE DRUGS</p>
-          </Link>
+          </Link> */}
         </div>
       </div>
     );

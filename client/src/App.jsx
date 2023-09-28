@@ -9,7 +9,6 @@ import Settings from "./pages/UserPage/Settings";
 import ManageDrugs from "./pages/ManageDrugs/ManageDrugs";
 import ManageImports from "./pages/ManageImports/ManageImports";
 import ManageExports from "./pages/ManageExports/ManageExports";
-import ManageSchedules from "./pages/ManageSchedules/ManageSchedules";
 import ManageAccounts from "./pages/ManageAccounts/ManageAccounts";
 import ViewAccounts from "./pages/ManageAccounts/ViewAccounts";
 import AddNewAccount from "./pages/ManageAccounts/AddNewAccount";
@@ -24,9 +23,11 @@ import ViewExports from "./pages/ManageExports/ViewExports.jsx";
 import ViewExportDetail from "./pages/ManageExports/ViewExportDetail";
 import AddNewExport from "./pages/ManageExports/AddNewExport";
 import Unauthorized from "./pages/ErrorPage/Unauthorized";
-import ViewSchedules from "./pages/ManageSchedules/ViewSchedules";
-import AddNewSchedule from "./pages/ManageSchedules/AddNewSchedule";
-import ViewScheduleDetail from "./pages/ManageSchedules/ViewScheduleDetail";
+
+// Manage appointment (customer)
+import ManageAppointments from "./pages/ManageAppointmentCustomer/ManageAppointments";
+import ViewAppointments from "./pages/ManageAppointmentCustomer/ViewAppointments";
+import AddNewAppointment from "./pages/ManageAppointmentCustomer/AddNewAppointment";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -56,10 +57,9 @@ const App = () => {
             <Route path=":id" element={<ViewExportDetail />} />
             <Route path="addNewExport" element={<AddNewExport />} />
           </Route>
-          <Route path="manage_schedules" element={<ManageSchedules />}>
-            <Route path="" element={<ViewSchedules />} />
-            <Route path="addNewSchedule" element={<AddNewSchedule />} />
-            <Route path=":id" element={<ViewScheduleDetail />} />
+          <Route path="manage_appointments" element={<ManageAppointments />}>
+            <Route path="" element={<ViewAppointments />} />
+            <Route path="addNewAppointment" element={<AddNewAppointment />} />
           </Route>
           <Route path="manage_accounts" element={<ManageAccounts />}>
             <Route path="" element={<ViewAccounts />} />
