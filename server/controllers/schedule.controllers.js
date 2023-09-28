@@ -12,9 +12,16 @@ const getSchedules = async (req, res, next) => {
   }
 };
 
-const getScheduleById = async (req, res, next) => {
+const getScheduleByCustomerId = async (req, res, next) => {
   try {
-    return successResponse(res, 200, -1, null);
+    const { customerId } = req.params;
+    const schedule = await examScheduleService.findByCustomerId(
+      parseInt(customerId)
+    );
+    if (!schedule) {
+      return errorResponse(res, 404, 1, "Not found");
+    }
+    return successResponse(res, 200, -1, schedule);
   } catch (error) {
     return errorResponse(res, 500, 1, "Internal server error");
   }
@@ -42,12 +49,22 @@ const addNewSchedule = async (req, res, next) => {
 };
 
 const deleteSchedule = async (req, res, next) => {
-  // delete all records
-  return errorResponse(res, 500, 1, "Server error, cannot delete!");
+  try {
+    const scheduleId = parseInt(req.params.id);
+    if (!scheduleId) {
+      return errorResponse(res, 400, 1, "Bad request!");
+    }
+    const result = await examScheduleService.delSchedule(scheduleId);
+    if (result) {
+      return successResponse(res, 200, -1, "Delete successfully");
+    }
+  } catch (err) {
+    return errorResponse(res, 500, 1, "Server error, cannot delete!");
+  }
 };
 
 module.exports = {
-  getScheduleById,
+  getScheduleByCustomerId,
   getSchedules,
   addNewSchedule,
   deleteSchedule,

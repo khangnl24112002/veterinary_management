@@ -9,7 +9,7 @@ const router = require("express").Router();
 // Lay danh sach thong tin schedule
 router.get("/", isAuthenticated, schedule.getSchedules);
 
-router.get("/:id", isAuthenticated, schedule.getScheduleById);
+router.get("/:customerId", isAuthenticated, schedule.getScheduleByCustomerId);
 
 // Tao mot thong tin Drug moi
 router.post("/", isAuthenticated, schedule.addNewSchedule);

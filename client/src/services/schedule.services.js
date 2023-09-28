@@ -11,9 +11,9 @@ export const getAllSchedules = async () => {
     });
 };
 
-export const getScheduleDetail = async (id) => {
+export const getScheduleByCustomerId = async (customerId) => {
   return await axiosInstance
-    .get(`/schedules/${id}`)
+    .get(`/schedules/${customerId}`)
     .then((response) => {
       return response.data;
     })

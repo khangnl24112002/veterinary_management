@@ -11,6 +11,14 @@ const findById = async (id) => {
   return schedule;
 };
 
+const findByCustomerId = async (customerId) => {
+  const schedule = await db.Exam_Schedule.findAll({
+    where: {
+      customerId,
+    },
+  });
+  return schedule;
+};
 const insert = async (newSchedule) => {
   const result = await db.Exam_Schedule.create(newSchedule);
   return result;
@@ -30,4 +38,5 @@ module.exports = {
   findById,
   insert,
   delSchedule,
+  findByCustomerId,
 };
