@@ -5,7 +5,6 @@ const getAll = async () => {
   return importReports;
 };
 
-// Fix it
 const findById = async (id) => {
   const importReport = await db.Prescription.findByPk(id, {
     include: [
