@@ -13,6 +13,16 @@ const getExamSchedules = async (req, res, next) => {
   }
 };
 
+const getExamScheduleDetail = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+    const schedules = await examScheduleService.findById(id);
+    return successResponse(res, 200, -1, schedules);
+  } catch (error) {
+    return errorResponse(res, 500, 1, "Internal server error!");
+  }
+};
+
 const updateExamSchedule = async (req, res, next) => {
   try {
     const { isOk } = req.body;
@@ -49,4 +59,5 @@ module.exports = {
   getExamSchedules,
   updateExamSchedule,
   deleteExamSchedule,
+  getExamScheduleDetail,
 };

@@ -32,6 +32,8 @@ import AddNewAppointment from "./pages/ManageAppointmentCustomer/AddNewAppointme
 // Manage appointment (admin)
 import ManageExamSchedules from "./pages/ManageExamSchedules/ManageExamSchedules";
 import ViewExamSchedules from "./pages/ManageExamSchedules/ViewExamSchedules";
+import ViewExamScheduleDetail from "./pages/ManageExamSchedules/ViewExamScheduleDetail";
+import AddExamHistory from "./pages/ManageExamHistories/AddExamHistory";
 
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
@@ -72,6 +74,8 @@ const App = () => {
           </Route>
           <Route path="manage_examSchedules" element={<ManageExamSchedules />}>
             <Route path="" element={<ViewExamSchedules />} />
+            <Route path=":id" element={<ViewExamScheduleDetail />} />
+            <Route path="addExamHistory" element={<AddExamHistory />} />
           </Route>
         </Route>
         <Route path="/unauthorized" element={<Unauthorized />} />

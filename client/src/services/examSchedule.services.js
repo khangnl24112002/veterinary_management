@@ -11,6 +11,17 @@ export const getAllExamSchedules = async () => {
     });
 };
 
+export const getExamScheduleDetail = async (id) => {
+  return await axiosInstance
+    .get(`/examSchedules/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
+    });
+};
+
 export const updateExamSchedules = async (examId, confirm) => {
   return await axiosInstance
     .put(`/examSchedules/${examId}`, { isOk: confirm })

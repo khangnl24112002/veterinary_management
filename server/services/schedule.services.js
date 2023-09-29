@@ -1,15 +1,15 @@
 import db, { Sequelize, sequelize } from "../models/index";
 
 const getAll = async () => {
-  const schedules = await db.Exam_Schedule.findAll({
-    include: [db.Customer],
-  });
+  const schedules = await db.Exam_Schedule.findAll();
   return schedules;
 };
 
 // Fix it
 const findById = async (id) => {
-  const schedule = await db.Exam_Schedule.findByPk(id);
+  const schedule = await db.Exam_Schedule.findByPk(id, {
+    include: [db.Customer],
+  });
   return schedule;
 };
 

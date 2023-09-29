@@ -8,6 +8,14 @@ const router = require("express").Router();
 // Lay danh sach thong tin drug
 router.get("/", isAuthenticated, checkIsAdmin, examSchedule.getExamSchedules);
 
+// Lay danh sach thong tin drug
+router.get(
+  "/:id",
+  isAuthenticated,
+  checkIsAdmin,
+  examSchedule.getExamScheduleDetail
+);
+
 // Tao mot thong tin Drug moi
 router.put(
   "/:id",
