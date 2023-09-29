@@ -1,7 +1,9 @@
 import db, { Sequelize, sequelize } from "../models/index";
 
 const getAll = async () => {
-  const schedules = await db.Exam_Schedule.findAll();
+  const schedules = await db.Exam_Schedule.findAll({
+    include: [db.Customer],
+  });
   return schedules;
 };
 
@@ -33,10 +35,16 @@ const delSchedule = async (id) => {
   return result;
 };
 
+const updateConfirm = async (id, isOk) => {
+  const result = await db.Exam_Schedule.update({ isOk }, { where: { id } });
+  return result;
+};
+
 module.exports = {
   getAll,
   findById,
   insert,
   delSchedule,
   findByCustomerId,
+  updateConfirm,
 };

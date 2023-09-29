@@ -29,6 +29,10 @@ import ManageAppointments from "./pages/ManageAppointmentCustomer/ManageAppointm
 import ViewAppointments from "./pages/ManageAppointmentCustomer/ViewAppointments";
 import AddNewAppointment from "./pages/ManageAppointmentCustomer/AddNewAppointment";
 
+// Manage appointment (admin)
+import ManageExamSchedules from "./pages/ManageExamSchedules/ManageExamSchedules";
+import ViewExamSchedules from "./pages/ManageExamSchedules/ViewExamSchedules";
+
 const App = () => {
   const { tokens, setTokens, removeTokens } = useToken();
   if (!tokens || (!tokens.accessToken && !tokens.refreshToken)) {
@@ -65,6 +69,9 @@ const App = () => {
             <Route path="" element={<ViewAccounts />} />
             <Route path="addNewAccount" element={<AddNewAccount />} />
             <Route path=":id" element={<ViewAccountDetail />} />
+          </Route>
+          <Route path="manage_examSchedules" element={<ManageExamSchedules />}>
+            <Route path="" element={<ViewExamSchedules />} />
           </Route>
         </Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
